@@ -1,0 +1,177 @@
+<%- include ('./include/nav')%>
+<div class="row mt-5">
+    <div class="col-md-6 m-auto">
+        <div class="card card-body">
+            <h1 class="text-center mb-3"><i class="fas fa-edit"></i>Update Profile</h1>
+            <%- include ('./partials/messages') %>
+            <form action="/updateProfile" method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input 
+                        type="name"
+                        name="username"
+                        id="username"
+                        class="form-control"
+                        placeholder="Enter username"
+                        value="<%= typeof username != 'undefined' ? username : '' %>"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="firstname">First name</label>
+                    <input 
+                        type="name"
+                        name="firstname"
+                        id="firstname"
+                        class="form-control"
+                        placeholder="Enter first name"
+                        value="<%= typeof firstname != 'undefined' ? firstname : '' %>"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="lastname">Last name</label>
+                    <input 
+                        type="name"
+                        name="lastname"
+                        id="lastname"
+                        class="form-control"
+                        placeholder="Enter last name"
+                        value="<%= typeof lastname != 'undefined' ? lastname : '' %>"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input 
+                        type="email"
+                        name="email"
+                        id="email"
+                        class="form-control"
+                        placeholder="Enter Email"
+                        value="<%= typeof email != 'undefined' ? email : '' %>"
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="gender">Gender</label>
+                    <select class="form-control" name="gender" id="gender">
+                        <option value="Unchanged">Unchanged</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="sexOr">Sexual Orientation</label>
+                    <select class="form-control" name="sexOr" id="sexOr">
+                        <option value="Unchanged">Unchanged</option>
+                        <option value="Bi">Bisexual</option>
+                        <option value="Hetro">Hetrosexual</option>
+                        <option value="Homo">Homosexual</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                        <label class="form-control-inline" for="dateOfBirth">Birth Year</label>
+                        <select name="dateOfBirth">
+                                <% for(var i = 2003; i >= 1920; i--) { %>
+                                  <option value="<%= i %>"><%= i %></option>
+                                <% } %>
+                        </select>
+                      <label class="form-control-inline" for="dateOfBirth">Month</label>
+                      <select name="dateOfBirth">
+                              <% for(var i = 1; i <= 12; i++) { %>
+                                <option value="<%= i %>"><%= i %></option>
+                              <% } %>
+                      </select>
+                        <label class="form-control-inline" for="dateOfBirth">Day</label>
+                        <select name="dateOfBirth">
+                                <% for(var i = 1; i <= 31; i++) { %>
+                                  <option value="<%= i %>"><%= i %></option>
+                                <% } %>
+                        </select>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input 
+                        type="location"
+                        name="location"
+                        id="location"
+                        class="form-control"
+                        placeholder="Enter location..."
+                        value="<%= typeof location != 'undefined' ? location : '' %>"
+                    >
+                    <small>*For best results enter: street, area, city, region, country</small>
+                </div>
+                <p>Interests (Please select 4): </p>
+                <div class="form-control-inline">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<label class="form-check-label">
+                            <input type="radio" name="Interest0" value="#Traveling" class="form-check-input">#Traveling
+                        &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label class="form-check-label">
+                            <input type="radio" name="Interest0" value="#Dancing" class="form-check-input">#Dancing
+                        &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        </label>
+                        <label class="form-check-label">
+                            <input type="radio" name="Interest0" value="#Exercise" class="form-check-input">#Exercise
+                        &nbsp;&nbsp;&nbsp;&nbsp;</label><hr>
+                </div>
+                <div class="form-control-inline">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<label class="form-check-label">
+                            <input type="radio" name="Interest1" value="#Outdoors" class="form-check-input">#Outdoors
+                        &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label class="form-check-label">
+                            <input type="radio" name="Interest1" value="#Politics" class="form-check-input">#Politics
+                        &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label class="form-check-label">
+                            <input type="radio" name="Interest1" value="#Cooking" class="form-check-input">#Cooking
+                        &nbsp;&nbsp;&nbsp;&nbsp;</label><hr>
+                </div>
+                <div class="form-control-inline">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<label class="form-check-label">
+                            <input type="radio" name="Interest2" value="#Photography" class="form-check-input">#Photography
+                        &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label class="form-check-label">
+                            <input type="radio" name="Interest2" value="#Sports" class="form-check-input">#Sports
+                        &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label class="form-check-label">
+                            <input type="radio" name="Interest2" value="#Pets" class="form-check-input">#Pets
+                        &nbsp;&nbsp;&nbsp;&nbsp;</label><hr>
+                </div>
+                <div class="form-control-inline">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<label class="form-check-label">
+                            <input type="radio" name="Interest3" value="#Art" class="form-check-input">#Art
+                            &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label class="form-check-label">
+                            <input type="radio" name="Interest3" value="#Learning" class="form-check-input">#Learning
+                            &nbsp;&nbsp;&nbsp;&nbsp;</label>
+                        <label class="form-check-label">
+                            <input type="radio" name="Interest3" value="#Music" class="form-check-input">#Music
+                        </label>
+
+                </div><hr>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password"
+                    id="password"
+                    name="password"
+                    class="form-control"
+                    placeholder="Enter password"
+                    value="<%= typeof password != 'undefined' ? password : '' %>" 
+                    >
+                </div>
+                <div class="form-group">
+                    <label for="confirmpassword">Confirm password</label>
+                    <input type="confirmpassword"
+                    id="confirmpassword"
+                    name="confirmpassword"
+                    class="form-control"
+                    placeholder="Confirm password"
+                    value="<%= typeof confirmpassword != 'undefined' ? confirmpassword : '' %>" 
+                    >
+                </div><br>
+                <div class="form-group">
+                    <label for="bio">Bio</label>
+                    <textarea class="form-control" name="bio" id="bio" cols="10" rows="5" placeholder="Tell us about yourself..."></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">Update</button>
+            </form>
+            <br>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,25 @@
+<%- include('./include/adminNav') %>
+<h1 class="mt-4">Block Requests</h1><br>
+<%- include('./partials/messages')%>
+
+<div class="d-sm-flex flex-row flex-wrap">
+<% for (let i = 0; i < ret.length; i++) {%>
+    <div class="col-lg-3 col-md-6 mb-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <strong><h3>Block Request</h3></strong>
+                <br>
+                <p><%= ret[i].ret[0].firstName %> wishes to block <%= ret[i].result[0].firstName %></p>
+                <div class="d-flex flex-row justify-content-center">
+                    <div class="p-3">
+                        <a href="/viewBlockReq/<%- ret[i]._id %>">
+                            <i data-toggle="tooltip" data-placement="top" title="View Report" class="fa fa-book"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+<% } %>
+</div>

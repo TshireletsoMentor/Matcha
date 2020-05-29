@@ -1,0 +1,44 @@
+<%- include ('./include/nav')%>
+<center>
+    <% if(result[0].extProfComp != 1){%>
+        <div class="card mt-3">
+            <strong><p>Please complete your extended profile to enjoy the site's full features</p></strong>
+            <a href="/updateProfile">Update Profile</a>
+        </div>
+        <br><br>
+    <%}%>
+    <% if(result[0].extProfComp == 1){%>
+        <div class="row mt-5">
+                <div class="col-md-6 m-auto">
+                    <div class="card card-body mt-4">
+                        <h1><span class="far fa-id-badge"></span> Profile</h1>
+                        <br><br><h2><%- result[0].username%></h2><br>
+                        <%if(result[0].profilePicture == "") {%>
+                            <img src="default.jpg" alt="default-avatar" style="width: 250px; height: 250px; border-radius: 50%; border: solid 2px lightgray">
+                        <%}else{%>
+                            <img src="<%- result[0].profilePicture%>" alt="" class="img-responsive" style="width: 250px; height: 250px; border-radius: 50%; border: solid 2px lightgray">
+                        <%}%>
+                        <br><br><div class="list-group">
+                            <p class="list-group-item" >First Name: <strong><%- result[0].firstname%></strong></p>
+                            <p class="list-group-item">Last Name: <strong><%- result[0].lastname%></strong></p>
+                            <p class="list-group-item">Gender: <strong><%- result[0].gender%></strong></p>
+                            <p class="list-group-item">Sexual Orientation: <strong><%- result[0].sexualOrientation%></strong></p>
+                            <p class="list-group-item">Age: <strong><%-age%></strong></p>
+                            <p class="list-group-item">City: <strong><%-result[0].location.city%></strong></p>
+                            <div class="list-group-item"> 
+                                <p >Interests: </p>
+                                <strong>
+                                        <%- result[0].interests.i1%>&nbsp;&nbsp;
+                                        <%- result[0].interests.i2%>&nbsp;&nbsp;
+                                        <%- result[0].interests.i3%>&nbsp;&nbsp;
+                                        <%- result[0].interests.i4%>
+                                </strong>
+                            </div>
+
+                            <p class="list-group-item">Bio: <strong><%- result[0].bio%></strong></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% } %>
+</center>

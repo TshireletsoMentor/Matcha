@@ -1,0 +1,85 @@
+<%- include ('./include/nav')%>
+<div class="container">
+    <div  class="card card-body mt-2">
+           <br></i><h1 ><i class="far fa-images"></i> Image Upload</h1>
+        <div class="card card-body">
+            <h4>Profile image</h4>
+            <%- include('./partials/messages') %>
+            <form action="/imageUpload" method="post" enctype="multipart/form-data">
+                <div class="form-data">
+                    <input type="file" name="userPic" class="form-control-file border">
+                </div><br>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+            <br><center>
+            <%if(!result[0].profilePicture){%>
+                <img src="default.jpg" alt="" class="img-responsive" style="width: 250px; height: 250px; border-radius: 50%; border: solid 2px lightgray">
+            <%}else{%>
+                <img src="<%= result[0].profilePicture%>" alt="lost" class="img-responsive" style="width: 250px; height: 250px; border-radius: 50%; border: solid 2px lightgray">
+            <%}%>
+            </center><br>
+            <form action="/imageDel" method="post">
+                <button class="btn btn-secondary">Remove</button>
+            </form>
+        </div>
+        <div class="card card-body">
+            <h4>Gallery</h4>
+            <%- include('./partials/messages2') %>
+            <form action="/galleryUpload" method="post" enctype="multipart/form-data">
+                <div class="form-data">
+                    <input type="file" name="userPic" class="form-control-file border">
+                </div>
+                <small>*Choose a file and select a field to upload into.</small>
+            <div class="mb-2" style="margin-left: 20%;">
+                <div class="row mt-4">
+                    <div class="column m-1 ">
+                        <input type="radio" name="gallery" value="1">
+                        <label for="gallery">
+                            <% if(result[0].pic1 != ""){%>
+                                <img src="<%= result[0].pic1 %>" alt="" style="width: 125px; height: 125px; border: solid 2px lightgray">
+                            <%}else{%>
+                                <img src="gallery.jpg" alt="" style="width: 125px; height: 125px; border: solid 2px lightgray">
+                            <%}%>
+                        </label>
+                    </div>
+                    <div class="column m-1">
+                        <input type="radio" name="gallery" value="2">
+                        <label for="gallery">
+                            <% if(result[0].pic2 != ""){%>
+                                <img src="<%= result[0].pic2 %>" alt="" style="width: 125px; height: 125px; border: solid 2px lightgray">
+                            <%}else{%>
+                                <img src="gallery.jpg" alt="" style="width: 125px; height: 125px; border: solid 2px lightgray">
+                            <%}%>
+
+                        </label>
+                    </div>
+                    <div class="column m-1">
+                        <input type="radio" name="gallery" value="3">
+                        <label for="gallery">
+                            <% if(result[0].pic3 != ""){%>
+                                <img src="<%= result[0].pic3 %>" alt="" style="width: 125px; height: 125px; border: solid 2px lightgray">
+                            <%}else{%>
+                                <img src="gallery.jpg" alt="" style="width: 125px; height: 125px; border: solid 2px lightgray">
+                            <%}%>                        
+                        </label>
+                    </div>
+                    <div class="column m-1">
+                        <input type="radio" name="gallery" value="4">
+                        <label for="gallery">
+                            <% if(result[0].pic4 != ""){%>
+                                <img src="<%= result[0].pic4 %>" alt="" style="width: 125px; height: 125px; border: solid 2px lightgray">
+                            <%}else{%>
+                                <img src="gallery.jpg" alt="" style="width: 125px; height: 125px; border: solid 2px lightgray">
+                            <%}%>                          
+                        </label>
+                    </div>
+                </div>
+            </div>
+                <button type="submit" class="btn btn-primary btn-block">Submit</button>
+            </form>
+            <form class="mt-2" action="/galleryDel" method="post">
+                <button class="btn btn-secondary">Clear gallery</button>
+            </form>
+        </div>
+    </div>
+</div>

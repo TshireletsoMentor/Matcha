@@ -1,0 +1,67 @@
+<%- include('./include/nav') %>
+<h1 class="mt-4">Blocked</h1><br>
+<%- include('./partials/messages') %>
+<% if (session.suspended == 1) { %>
+    <p>Following a report, your account has been suspended and is currently under review, this will take some time so please be patient while we evaluate all the facts.</p><br><br>
+<% } %>
+<% if (session.suspended != 1) { %>
+    <div class="d-sm-flex flex-row flex-wrap">
+        <% for (let i = 0; i < ret.length; i++) { %>
+            <% if (result[0].blocked.includes("" + ret[i]._id)) { %>
+                <div class="col-lg-3 col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <% if (session.extProfComp != 1) { %>
+                                <% if (!ret[i].profilePicture) { %>
+                                    <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                                <% } else { %>
+                                    <img src="/<%= ret[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                                <% } %>
+                            <% } %>
+                            <% if (session.extProfComp == 1) {%>
+                                <% if (!ret[i].profilePicture) { %>
+                                    <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                                <% } else { %>
+                                    <img src="/<%= ret[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                                <% } %>
+                            <% } %>
+                            <div>
+                                <% if (ret[i].online == 'Y') { %>
+                                    <h3><i data-toggle="tooltip" data-placement="top" title="Online">&#x1F49A</i> <%= ret[i].firstName %> <%= ret[i].age %></h3>
+                                <% } else { %>
+                                    <h3><i data-toggle="tooltip" data-placement="top" title="<%= ret[i].lastOn %>">&#x1F494</i> <%= ret[i].firstName %> <%= ret[i].age %></h3>
+                                <% } %>
+                            </div>
+                            <strong><h5><%= ret[i].location.city %></h5></strong>
+                            <% if (ret[i].bio.length > 75) { %>
+                                <p><%= ret[i].bio.substring(0, 75) %>...</p>
+                            <% } else {%>
+                                <p><%= ret[i].bio.substring(0, 75) %>%></p>
+                            <% } %>
+                            <div class="d-flex flex-row justify-content-center">
+                                <div class="p-3">
+                                    <a href="/viewProf/<%- ret[i].viewToken%>">
+                                        <i data-toggle="tooltip" data-placement="top" title="View Profile" class="fa fa-eye"></i>
+                                    </a>
+                                </div>
+                                <div class="p-3">
+                                    <a href="/report/<%- ret[i].viewToken%>">
+                                        <i data-toggle="tooltip" data-placement="top" title="Report Account" class="fa fa-exclamation-triangle"></i>
+                                    </a>
+                                </div>
+                                <div class="p-3">
+                                    <a href="/block2/<%- ret[i].viewToken%>">
+                                        <i data-toggle="tooltip" data-placement="top" title="Unblock" class="fa fa-unlock"></i>
+                                    </a>
+                                </div>
+                                <div class="p-3">
+                                    <i data-toggle="tooltip" data-placement="top" title="Popularity" class="fa fa-star"> <%= ret[i].popularity %> </i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% } %>
+        <% } %>
+    </div>
+<% } %>

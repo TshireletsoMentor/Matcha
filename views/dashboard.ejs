@@ -1,3 +1,68 @@
-<h1 class="mt-4">Dashboard</h1>
-<p class="lead mb-3">Welcome <%= user.name%></p>
-<a href="/users/logout" class="btn btn-secondary">Logout</a>
+<%- include ('./include/nav')%>
+<div>
+<div class="ml-3">
+    <h1 class="mt-4">Dashboard</h1>
+    <p class="lead m3-3">Welcome <%= session.username%></p>
+</div>
+
+<div class="d-sm-flex flex-row flex-wrap">
+<% for (let i = 0; i < result.length; i++) { %>
+    <%if(result[i]._id != session.objId || result[i].extProfComp != 1){%>
+    <div class="col-lg-3 col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                        <% if (session.extProfComp != 1) { %>
+                            <% if (!result[i].profilePicture) { %>
+                                <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                            <% } else { %>
+                                <img src="/<%= result[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                            <% } %>
+                        <% } %>
+                        <% if (session.extProfComp == 1) { %>
+                            <% if (!result[i].profilePicture) { %>
+                                <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle m-2">
+                            <% } else { %>
+                            <img src="/<%= result[i].profilePicture %>" alt="" class="img-thumbnail mb-3 rounded-circle">
+                            <% } %>
+                        <% } %>
+                        <div>
+                            <% if (result[i].online == 'Y') { %> 
+                                <h3><i data-toggle="tooltip" data-placement="top" title="Online"> &#x1F49A</i> <%= result[i].firstname %> <%= result[i].age %></h3>
+                            <% } else { %>
+                                <h3><i data-toggle="tooltip" data-placement="top" title="last seen <%- result[i].lastOn%>">&#x1F494</i> <%= result[i].firstname %> <%= result[i].age %></h3>
+                            <% } %>
+                        </div>
+                            <strong><h5><%- result[i].location.city%></h5></strong>
+                            <%  if(result[i].bio.length > 75){%>
+                                    <p><%= result[i].bio.substring(0, 75) + "..."; %></p>
+                            <%  }else{ %>
+                                    <p><%= result[i].bio; %></p>
+                            <%  } %>
+                        <div class="d-sm-flex flex-row justify-content-center">
+                            <div class="p-2">
+                                <a href="/like/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
+                                    <i class="fa fa-heart" ></i>
+                                </a>
+                            </div>
+                            <div class="p-2">
+                                <a href="/viewProf/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
+                                    <i class="fa fa-eye"></i>
+                                </a>
+                            </div>
+                            <div class="p-2">
+                                <a href="/report/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Report">
+                                    <i class="fa fa-exclamation-triangle"></i>
+                                </a>
+                            </div>
+                            <div class="p-2">
+                                <i class="fa fa-star" data-toggle="tooltip" data-placement="top" title="Popularity"> <%= result[i].popularity %></i>
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+    <br>
+        <% }%>
+    <% } %>
+    </div>
+</div>
