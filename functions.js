@@ -10,9 +10,12 @@ module.exports = {
             secure: false,
             port: 25,
             auth: {
-                user: process.env.EMAIL,
-                pass: process.env.PASSWORD
-            }
+                user:"dontreply.matcha@gmail.com",
+                // process.env.EMAIL,
+                pass:"IT7matcha7"
+                // process.env.PASSWORD
+            },
+            tls: { rejectUnauthorized: false }
         });
 
         let mailOptions = {

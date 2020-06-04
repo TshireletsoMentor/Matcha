@@ -32,7 +32,7 @@
                                 <h3><i data-toggle="tooltip" data-placement="top" title="last seen <%- result[i].lastOn%>">&#x1F494</i> <%= result[i].firstname %> <%= result[i].age %></h3>
                             <% } %>
                         </div>
-                            <strong><h5><%- result[i].location.city%></h5></strong>
+                            <strong><h5><%- result[i].city%></h5></strong>
                             <%  if(result[i].bio.length > 75){%>
                                     <p><%= result[i].bio.substring(0, 75) + "..."; %></p>
                             <%  }else{ %>

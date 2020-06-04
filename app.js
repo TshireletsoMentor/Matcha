@@ -1,8 +1,9 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
-const client = require('./config/connect');
+const connection = require('./config/connect');
 const favicon = require('express-favicon');
 const session = require('express-session');
+const MySQLStore = require('express-mysql-session')(session);
 require('dotenv').config();
 const path = require('path');
 
@@ -21,10 +22,13 @@ app.use(favicon(path.join(__dirname, 'favicon', 'favicon.ico')));
 app.use(express.static('uploads'));
 
 //Express sessions
+const sessionStore = new MySQLStore({}, connection);
 app.use(session({
+    key: process.env.SESSION_COOKIE_NAME,
     secret: process.env.SESSION_SECRET,
-    resave: true,
-    saveUninitialized: true
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false
 }));
 
 //routes

@@ -1,0 +1,80 @@
+const mysql = require('mysql');
+
+// create connection
+const connection = mysql.createConnection({
+  host      : 'localhost',
+  user      : 'matcha',
+  password  : '123456'
+});
+
+connection.connect();
+console.log('\x1b[35m%s\x1b[0m', "Connected to MySql...");
+
+connection.query('CREATE DATABASE IF NOT EXISTS matcha');
+console.log('\x1b[35m%s\x1b[0m', ' Database \"matcha\" created');
+
+connection.query('USE matcha');
+
+connection.query(`CREATE TABLE IF NOT EXISTS users 
+( id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+  username VARCHAR(100) NOT NULL, 
+  firstname VARCHAR(100) NOT NULL, 
+  lastname VARCHAR(100) NOT NULL, 
+  email VARCHAR(255) NOT NULL, 
+  altEmail VARCHAR(255),
+  password VARCHAR(255) NOT NULL, 
+  token VARCHAR(255) NOT NULL,
+  viewToken VARCHAR(255) NOT NULL,
+  verified VARCHAR(1) DEFAULT \'N\',
+  gender VARCHAR(15),
+  sexualOrientation VARCHAR(25),
+  dateOfBirth DATE,
+  age INT,
+  bio VARCHAR(10000),
+  interest1 VARCHAR(50),
+  interest2 VARCHAR(50),
+  interest3 VARCHAR(50),
+  interest4 VARCHAR(50),
+  city VARCHAR(100),
+  lat FLOAT,
+  lng FLOAT,
+  popularity INT DEFAULT \'5\',
+  profilePicture VARCHAR(255),
+  pic1 VARCHAR(255), 
+  pic2 VARCHAR(255), 
+  pic3 VARCHAR(255), 
+  pic4 VARCHAR(255),
+  online VARCHAR(1) DEFAULT \'N\',
+  lastOn DATE,
+  suspended INT DEFAULT \'0\',
+  extProfComp INT DEFAULT \'0\'
+ )`);
+console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"users\" CREATED');
+
+connection.query(`CREATE TABLE IF NOT EXISTS likes 
+( id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+  username VARCHAR(100) NOT NULL, 
+  liked VARCHAR(100) NOT NULL
+)`);
+console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"likes\" CREATED');
+
+connection.query(`CREATE TABLE IF NOT EXISTS blocked 
+( id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+  username VARCHAR(100) NOT NULL, 
+  liked VARCHAR(100) NOT NULL
+)`);
+console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"blocked\" CREATED');
+
+connection.query(`CREATE TABLE IF NOT EXISTS profileViews 
+( id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+  username VARCHAR(100) NOT NULL, 
+  visited VARCHAR(100) NOT NULL
+)`);
+console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"profileViews\" CREATED');
+
+
+// notifications
+// chats
+// connection.query();
+// console.log('\x1b[35m%s\x1b[0m');
+connection.end();

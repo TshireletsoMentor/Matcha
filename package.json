@@ -18,6 +18,7 @@
     "express": "^4.17.1",
     "express-ejs-layouts": "^2.5.0",
     "express-favicon": "^2.0.1",
+    "express-mysql-session": "^2.1.4",
     "express-session": "^1.17.0",
     "faker": "^4.1.0",
     "geolib": "^3.2.1",
