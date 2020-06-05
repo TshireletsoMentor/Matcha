@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const client = require('../config/connect');
-const dbname = "Matcha";
+const connection = require('../config/connect');
 const functions = require('../functions');
 
 router.get('/', (req, res) => {
@@ -14,12 +13,22 @@ router.get('/', (req, res) => {
         res.render('login', {errors});
     }
     else{
-        dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
-            if(err) throw err;
+      const sql = "SELECT * FROM users WHERE email = ?";
+      connection.query(sql, [
+        session.email
+      ], (err, result) => {
+        if(err) throw err;
 
-            var age = functions.age(result[0].dateOfBirth[0], result[0].dateOfBirth[1], result[0].dateOfBirth[2])
-            res.render('myProfile', {result, age});
-        })
+        var age = functions.age(result[0].dateOfBirth)
+        res.render('myProfile', {result, age});
+      })
+
+      // dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
+      //     if(err) throw err;
+
+      //     var age = functions.age(result[0].dateOfBirth[0], result[0].dateOfBirth[1], result[0].dateOfBirth[2])
+      //     res.render('myProfile', {result, age});
+      // })
     }
 })
 

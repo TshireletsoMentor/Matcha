@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const client = require('../config/connect');
-const dbname = "Matcha";
+const connection = require('../config/connect');
 const functions = require('../functions');
 const path = require('path')
 
@@ -45,17 +44,28 @@ router.get('/', (req, res) => {
         res.render('login', {errors});
     }
     else{
-        
+      const sql = "SELECT * FROM users WHERE email = ?";
+      connection.query(sql, [
+        session.email
+      ], (err, result) => {
+        if(err) throw err;
+          
+        if(result[0].profilePicture != 'undefined' || result[0].profilePicture != '')
+            res.render('imageUpload', {result});
+        else{
+            res.render('imageUpload');
+        }
+      })
 
-        dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
-            if(err) throw err;
-            
-            if(result[0].profilePicture != 'undefined' || result[0].profilePicture != '')
-                res.render('imageUpload', {result});
-            else{
-                res.render('imageUpload');
-            }
-        });
+      // dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
+      //     if(err) throw err;
+          
+      //     if(result[0].profilePicture != 'undefined' || result[0].profilePicture != '')
+      //         res.render('imageUpload', {result});
+      //     else{
+      //         res.render('imageUpload');
+      //     }
+      // });
     }
 });
 

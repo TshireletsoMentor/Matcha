@@ -34,7 +34,7 @@ router.get('/', (req, res) => {
         // });
     }
     else{
-            res.render('login');
+      res.render('login');
     }
 });
 

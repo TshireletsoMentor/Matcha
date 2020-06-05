@@ -1,10 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcrypt');
-const client = require('../config/connect');
-const dbname = "Matcha";
+const connection = require('../config/connect');
 const uniqid = require('uniqid');
-const functons = require('../functions');
 
 // Verify Get handle
 router.get('/:token', (req, res) => {
@@ -18,28 +15,52 @@ router.get('/:token', (req, res) => {
     }
     else{
         var Token = uniqid() + uniqid();
-        client.connect((err, db) => {
-            if(err) throw err;
 
-            dbObj = client.db(dbname);
+        const sql1 = "SELECT * FROM users WHERE token = ?";
+        connection.query(sql1, [
+          token
+        ], (err, result) => {
+          if(err) throw err;
 
-            dbObj.collection('users').find({token: token}).toArray((err, result) => {
+          if(!result.length){
+            errors.push({msg: 'Invalid token'});
+            res.render('login', {errors});
+          }else{
+            const sql2 = "UPDATE users SET email = ?, altEmail = '', token = ?";
+            connection.query(sql2, [
+              result[0].altEmail,
+              Token
+            ], (err, result) => {
                 if(err) throw err;
-                if(!result.length){
-                    errors.push({msg: 'Invalid token'});
-                    res.render('login', {errors});
-                }
-                else{
-                    //Changes verified from No to Yes, updates token as it was exposed
-                    dbObj.collection('users').updateOne({token: token}, {$set: {email: result[0].altEmail, altEmail: "", token: Token}}, (err, result) => {
-                        if(err) throw err;
 
-                        success.push({msg: 'Email address changed'});
-                        res.render('login', {success});
-                    });
-                }
-            });
+                success.push({msg: 'Email address changed'});
+                res.render('login', {success});
+            })
+          }
         });
+
+        // client.connect((err, db) => {
+        //     if(err) throw err;
+
+        //     dbObj = client.db(dbname);
+
+        //     dbObj.collection('users').find({token: token}).toArray((err, result) => {
+        //         if(err) throw err;
+        //         if(!result.length){
+        //             errors.push({msg: 'Invalid token'});
+        //             res.render('login', {errors});
+        //         }
+        //         else{
+        //             //Changes verified from No to Yes, updates token as it was exposed
+        //             dbObj.collection('users').updateOne({token: token}, {$set: {email: result[0].altEmail, altEmail: "", token: Token}}, (err, result) => {
+        //                 if(err) throw err;
+
+        //                 success.push({msg: 'Email address changed'});
+        //                 res.render('login', {success});
+        //             });
+        //         }
+        //     });
+        // });
     }
 });
 

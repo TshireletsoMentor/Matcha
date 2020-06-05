@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const client = require('../config/connect');
-const dbname = "Matcha";
+const connection = require('../config/connect');
 const functions = require("../functions");
 
 //Handle already logged in error
@@ -32,35 +31,56 @@ router.post('/', (req, res) => {
     else{
         var Email = email.toLowerCase();
 
-        client.connect((err, db) => {
-            if(err) throw err;
+        const sql = "SELECT * FROM users WHERE email = ?";
+        connection.query(sql, [
+          Email
+        ], (err, result) => {
+          if (err) throw err;
 
-            dbObj = client.db(dbname);
+          if(!result){
+            success.push({msg: 'Email sent'});
+          }
+          else if(result[0].email == 'N'){
+              functions.sendMail(result[0].firstname, result[0].email, result[0].token);
+              success.push({msg: 'Email sent'});
+          }
+          else{
+              functions.forgotMail(result[0].firstname, result[0].email, result[0].token);
+              success.push({msg: 'Email sent'});
+          }
 
-            dbObj.collection('users').find({email: Email}).toArray((err, result) => {
-                if(err) throw err;
+          if(success){
+              res.render('forgotPassword', {success})
+          }          
+        })
+        
+        // client.connect((err, db) => {
+        //     if(err) throw err;
 
-                if(!result){
-                    success.push({msg: 'Email sent'});
-                }
-                else if(result[0].email == 'N'){
-                    functions.sendMail(result[0].firstname, result[0].email, result[0].token);
-                    success.push({msg: 'Email sent'});
-                }
-                else{
-                    functions.forgotMail(result[0].firstname, result[0].email, result[0].token);
-                    success.push({msg: 'Email sent'});
-                }
+        //     dbObj = client.db(dbname);
 
-                if(success){
-                    res.render('forgotPassword', {success})
-                }
-            })
+        //     dbObj.collection('users').find({email: Email}).toArray((err, result) => {
+        //         if(err) throw err;
 
-        });
+        //         if(!result){
+        //             success.push({msg: 'Email sent'});
+        //         }
+        //         else if(result[0].email == 'N'){
+        //             functions.sendMail(result[0].firstname, result[0].email, result[0].token);
+        //             success.push({msg: 'Email sent'});
+        //         }
+        //         else{
+        //             functions.forgotMail(result[0].firstname, result[0].email, result[0].token);
+        //             success.push({msg: 'Email sent'});
+        //         }
+
+        //         if(success){
+        //             res.render('forgotPassword', {success})
+        //         }
+        //     })
+
+        // });
     }
-
 });
-
 
 module.exports = router;

@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const client = require('../config/connect');
-const dbname = "Matcha";
-const uniqid = require('uniqid');
-const functons = require('../functions');
+const connection = require('../config/connect');
+
 
 router.get('/', (req, res) => {
     let errors = [];
@@ -27,28 +25,28 @@ router.get('/:viewToken', (req, res) => {
         res.render('login', {errors});
     }
     else {
-        dbObj.collection("users").find({"viewToken": viewToken}).toArray((err, result) => {
-            if (err) throw err;
-            if (result[0]._id != session.objId ) {
+      dbObj.collection("users").find({"viewToken": viewToken}).toArray((err, result) => {
+          if (err) throw err;
+          if (result[0]._id != session.objId ) {
 
-                var myquery = { "viewToken": viewToken };
-                var newvalues = { $addToSet: { profileViews: session.objId } };
+              var myquery = { "viewToken": viewToken };
+              var newvalues = { $addToSet: { profileViews: session.objId } };
 
-                dbObj.collection("users").updateOne(myquery, newvalues, (err, response) => {
-        
-                    if (err) throw err;
-                });
-            }
-        });
+              dbObj.collection("users").updateOne(myquery, newvalues, (err, response) => {
+      
+                  if (err) throw err;
+              });
+          }
+      });
 
-        dbObj.collection("users").find({"viewToken": viewToken}).toArray((err, result) => {
-            if (err) throw err;
-            views = Math.floor(result[0].profileViews.length / 10) + result[0].popularity;
-            dbObj.collection("users").updateOne({"viewToken": viewToken}, {$set: {popularity: views > 6 ? views - 1 : views } }, (err, respone) => {
-                if(err) throw err;
-                res.render('viewProf', { result });
-            });
-        });
+      dbObj.collection("users").find({"viewToken": viewToken}).toArray((err, result) => {
+          if (err) throw err;
+          views = Math.floor(result[0].profileViews.length / 10) + result[0].popularity;
+          dbObj.collection("users").updateOne({"viewToken": viewToken}, {$set: {popularity: views > 6 ? views - 1 : views } }, (err, respone) => {
+              if(err) throw err;
+              res.render('viewProf', { result });
+          });
+      });
     }
 });
 
