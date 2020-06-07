@@ -27,7 +27,7 @@ connection.query(`CREATE TABLE IF NOT EXISTS users
   viewToken VARCHAR(255) NOT NULL,
   verified VARCHAR(1) DEFAULT \'N\',
   gender VARCHAR(15),
-  sexualOrientation VARCHAR(25),
+  sexualOrientation VARCHAR(25) DEFAULT \'Bisexual\',
   dateOfBirth DATE,
   age INT,
   bio VARCHAR(10000),
@@ -45,7 +45,7 @@ connection.query(`CREATE TABLE IF NOT EXISTS users
   pic3 VARCHAR(255), 
   pic4 VARCHAR(255),
   online VARCHAR(1) DEFAULT \'N\',
-  lastOn DATE,
+  lastOn DATETIME,
   suspended INT DEFAULT \'0\',
   extProfComp INT DEFAULT \'0\'
  )`);

@@ -1,9 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const client = require('../config/connect');
-const dbname = "Matcha";
+const connection = require('../config/connect');
 const bcrypt = require('bcrypt');
-const functions = require("../functions");
 const functons = require('../functions');
 
 router.get('/:token', (req, res) => {
@@ -15,27 +13,46 @@ router.get('/:token', (req, res) => {
         errors.push({msg: 'No token provided, retry forgot password'});
         res.render('login', {errors});
     }
-    client.connect((err, db) => {
-        dbObj = client.db(dbname);
 
-        dbObj.collection("users").find({"token": token}).toArray((err, result) => {
-            if(err) throw err;
-            if(!result.length){
-                errors.push({msg: 'Invalid token'});
-                res.render('login', {errors});
-            }
-            else{
-                session = req.session;
-                session.email = result[0].email;
-                console.log(session.email);
-                res.render('resetPassword');
-            }
-        })
+    const sql1 = "SELECT * FROM users WHERE token = ?";
+    connection.query(sql1, [
+      token
+    ], (err, result) => {
+      if (err) throw err;
+
+      if(!result.length){
+        errors.push({msg: 'Invalid token'});
+        res.render('login', {errors});
+      }
+      else{
+        session = req.session;
+        session.email = result[0].email;
+        console.log(session.email);
+        res.render('resetPassword');
+      }
     })
+
+    // client.connect((err, db) => {
+    //     dbObj = client.db(dbname);
+
+    //     dbObj.collection("users").find({"token": token}).toArray((err, result) => {
+    //         if(err) throw err;
+    //         if(!result.length){
+    //             errors.push({msg: 'Invalid token'});
+    //             res.render('login', {errors});
+    //         }
+    //         else{
+    //             session = req.session;
+    //             session.email = result[0].email;
+    //             console.log(session.email);
+    //             res.render('resetPassword');
+    //         }
+    //     })
+    // })
 })
 
 router.post('/', (req, res) => {
-    console.log(session.objId);
+    console.log(session.email);
     const {password, confirmpassword} = req.body;
     let errors = [];
     let success = [];
@@ -56,17 +73,29 @@ router.post('/', (req, res) => {
     }
     else{
         var hash = bcrypt.hashSync(password, 10);
-        client.connect((err, db) => {
-            if(err) throw err
+        const sql2 = "UPDATE users SET password = ?, token = ? WHERE email = ?";
+        connection.query(sql2, [
+          hash,
+          Token,
+          session.email
+        ], (err, result) => {
+          if (err) throw err;
 
-            dbObj = client.db(dbname);
-            var options = { "upsert": false };
-            dbObj.collection("users").updateOne({"_id": session.email}, {$set: {password: hash, token: Token}}, (err, result) => {
-                success.push({msg: 'Password succesfully reset'});
-                res.render('login', {success});
-            });
-
+          success.push({msg: 'Password succesfully reset'});
+          res.render('login', {success});
         })
+
+        // client.connect((err, db) => {
+        //     if(err) throw err
+
+        //     dbObj = client.db(dbname);
+        //     var options = { "upsert": false };
+        //     dbObj.collection("users").updateOne({"_id": session.email}, {$set: {password: hash, token: Token}}, (err, result) => {
+        //         success.push({msg: 'Password succesfully reset'});
+        //         res.render('login', {success});
+        //     });
+
+        // })
     }
 })
 

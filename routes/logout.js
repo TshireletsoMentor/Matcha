@@ -11,7 +11,7 @@ router.get('/', (req, res) => {
       const sql = "UPDATE users SET online = ?, lastOn = ? WHERE email = ?";
       connection.query(sql, [
         'N',
-        Date(),
+        new Date(),
         session.email
       ], (err, result) => {
         if (err) throw err;

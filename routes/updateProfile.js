@@ -203,16 +203,27 @@ router.post('/', (req, res) => {
             success.push({msg: 'Sexual orientation updated successfully!'});
           })
         }
-        if(dateOfBirth != 2003){
-          const sql9 = "UPDATE users SET dateOfBirth = ? WHERE email = ?";
-          connection.query(sql9, [
-            dateOfBirth,
-            session.email
-          ], (err, result) => {
-            if(err) throw err;
-
-            success.push({msg: 'Date of birth updated successfully!'});
-          })
+        if(dateOfBirth){
+          let year = new Date(dateOfBirth).getFullYear();
+          let month = new Date(dateOfBirth).getMonth();
+          let day = new Date(dateOfBirth).getDay();
+          if(year > 1920 && year < 2003){
+            let Age = functions.age(year, month, day)
+            const sql9 = "UPDATE users SET dateOfBirth = ?, age = ? WHERE email = ?";
+            connection.query(sql9, [
+              dateOfBirth,
+              Age,
+              session.email
+            ], (err, result) => {
+              if(err) throw err;
+  
+              success.push({msg: 'Date of birth updated successfully!'});
+            })
+          }else if (year < 1920){
+            errors.push({msg: 'Please enter your real age, Dumbledore.'});
+          }else{
+            errors.push({msg: 'The age restriction for this application is 18+, please refrain from using this application if otherwise!'});
+          }
         }
         if(location){
           var url = "https://geocoder.ls.hereapi.com/6.2/geocode.json?";
@@ -239,10 +250,10 @@ router.post('/', (req, res) => {
                         ], (err, result) => {
                           if(err) throw err;
 
-                          console.log("Location manually updated")                            
                         })
                   }
           });
+          success.push({msg: 'Location updated successfully!'});
         }
         if(Interest0){
           const sql11 = "UPDATE users SET interest1 = ? WHERE email = ?";
@@ -333,7 +344,7 @@ router.post('/', (req, res) => {
           //Update db for extended profile complete marker, if any of the properties in dbObj is empty, render 'incomplete profile'.
           //console.log(result[0]);
           if(result[0].username && result[0].firstname && result[0].lastname && result[0].email && result[0].password && result[0].gender && result[0].sexualOrientation && result[0].dateOfBirth && result[0].bio && result[0].interest1 && result[0].interest2 && result[0].interest3 && result[0].interest4){
-              if(result[0].city == "" && result[0].lat == "" && result[0].lng == ""){
+            if(result[0].city == "" && result[0].lat == "" && result[0].lng == ""){
                   var URL = "https://www.ipapi.co/json";
                   request({
                     url: URL,
