@@ -13,14 +13,34 @@ router.get('/', (req, res) => {
     session = req.session;
 
     if(session.email){
+      let perPage = 8;
+      let page = req.params.page || 1;
+      
+      const sql1 = "SELECT * FROM users WHERE email = ?";
+      connection.query(sql1, [
+        session.email
+      ], (err, result) => {
+        if (err) throw err;
+        if (session.username == 'admin'){
+          var sqlY = "SELECT COUNT(*) AS count FROM users WHERE online = 'Y'";
+        }else{
+          var sqlY = "SELECT COUNT(*) AS count FROM users"
+        }
+        connection.query(sqlY, (err, count) => {
+          if (err) throw err;
+          const sql5 = "SELECT * FROM users LIMIT ?, ?";
+          connection.query(sql5, [
+            (perPage * page) - perPage,
+            perPage,
+          ], (err, ret) => {
+            if (err) throw err;
+            res.render('dashboard', { result, ret, current: page, pages: Math.ceil(count[0].count / perPage), count: count[0].count });
+          })
+        })
+      })
+
         // let errors = [];
         // errors.push({msg: 'You have to logout to view this this page'});
-        const sql = "SELECT * FROM users";
-        connection.query(sql, (err, result) => {
-          if (err) throw err;
-
-          res.render('dashboard', { result })
-        });
         // client.connect((err, db) => {
         //     if(err) throw err;
 
@@ -131,7 +151,7 @@ router.post('/', (req, res) => {
                   session.objId = result[0].id;
                   session.extProfComp = result[0].extProfComp;
                   setTimeout(() => {
-                    const sql4 = "SELECT COUNT(*) AS count FROM users";
+                    const sql4 = "SELECT COUNT(*) AS count FROM users WHERE online = 'Y'";
                     connection.query(sql4, (err, count) => {
                       if (err) throw err;
                       const sql5 = "SELECT * FROM users LIMIT ?, ?";
@@ -140,7 +160,7 @@ router.post('/', (req, res) => {
                         perPage,
                       ], (err, ret) => {
                         if (err) throw err;
-                        res.render('dashboard', { result, ret, current: page, pages: Math.ceil(count[0].count / perPage) })
+                        res.render('dashboard', { result, ret, current: page, pages: Math.ceil(count[0].count / perPage), count: count[0].count })
                       })
                     })
                   }, 500);

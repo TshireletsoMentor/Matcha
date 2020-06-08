@@ -19,8 +19,7 @@ router.get('/', (req, res) => {
       ], (err, result) => {
         if(err) throw err;
 
-        var age = functions.age(result[0].dateOfBirth)
-        res.render('myProfile', {result, age});
+        res.render('myProfile', {result});
       })
 
       // dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {

@@ -23,15 +23,15 @@
                             <p class="list-group-item">Last Name: <strong><%- result[0].lastname%></strong></p>
                             <p class="list-group-item">Gender: <strong><%- result[0].gender%></strong></p>
                             <p class="list-group-item">Sexual Orientation: <strong><%- result[0].sexualOrientation%></strong></p>
-                            <p class="list-group-item">Age: <strong><%-age%></strong></p>
-                            <p class="list-group-item">City: <strong><%-result[0].location.city%></strong></p>
+                            <p class="list-group-item">Age: <strong><%- result[0].age%></strong></p>
+                            <p class="list-group-item">City: <strong><%-result[0].city%></strong></p>
                             <div class="list-group-item"> 
                                 <p >Interests: </p>
                                 <strong>
-                                        <%- result[0].interests.i1%>&nbsp;&nbsp;
-                                        <%- result[0].interests.i2%>&nbsp;&nbsp;
-                                        <%- result[0].interests.i3%>&nbsp;&nbsp;
-                                        <%- result[0].interests.i4%>
+                                        <%- result[0].interest1%>&nbsp;&nbsp;
+                                        <%- result[0].interest2%>&nbsp;&nbsp;
+                                        <%- result[0].interest3%>&nbsp;&nbsp;
+                                        <%- result[0].interest4%>
                                 </strong>
                             </div>
 

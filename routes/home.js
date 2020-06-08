@@ -66,4 +66,6 @@ router.get('/:page', (req, res) => {
       })
     })
   }
-})
+});
+
+module.exports = router;

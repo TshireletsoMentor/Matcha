@@ -35,7 +35,7 @@ app.use(session({
 app.use('/', require('./routes/index'));
 //
 app.use('/blockReq', require('./routes/blockReq'));
-// app.use('/dashboardPagination', require('./routes/dashboardPagination'));
+app.use('/home', require('./routes/home'));
 app.use('/deleteAcc', require('./routes/deleteAcc'));
 app.use('/deleteAcc2', require('./routes/deleteAcc2'));
 //

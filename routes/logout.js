@@ -27,6 +27,8 @@ router.get('/', (req, res) => {
         errors.push({msg: 'You are now logged out'});
         res.render('login', {errors});
       });
+    }else{
+      res.render('login');
     }
 
     // dbObj.collection("users").find({email: session.email}).toArray((err, result) => {

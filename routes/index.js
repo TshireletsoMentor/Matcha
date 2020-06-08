@@ -7,12 +7,30 @@ router.get('/', (req, res) => {
     session = req.session;
 
     if(session.email){
-        // let errors = [];
-        // errors.push({msg: 'You have to logout to view this this page'});
-        connection.query("SELECT * FROM users", (err, result) => {
+      let perPage = 8;
+      let page = req.params.page || 1;
+      
+      const sql1 = "SELECT * FROM users WHERE email = ?";
+      connection.query(sql1, [
+        session.email
+      ], (err, result) => {
+        if (err) throw err;
+        
+        const sql4 = "SELECT COUNT(*) AS count FROM users";
+        connection.query(sql4, (err, count) => {
           if (err) throw err;
-          res.render('dashboard', { result });
-        });
+          const sql5 = "SELECT * FROM users LIMIT ?, ?";
+          connection.query(sql5, [
+            (perPage * page) - perPage,
+            perPage,
+          ], (err, ret) => {
+            if (err) throw err;
+            res.render('dashboard', { result, ret, current: page, pages: Math.ceil(count[0].count / perPage) });
+          })
+        })
+      })
+      // let errors = [];
+        // errors.push({msg: 'You have to logout to view this this page'});
         // dbObj.collection("users").find({}).toArray((err, result) => {
         //     if(err) throw err;
 
@@ -20,7 +38,7 @@ router.get('/', (req, res) => {
         // });
     }
     else{
-         res.render('welcome');
+      res.render('welcome');
     }
 });
 

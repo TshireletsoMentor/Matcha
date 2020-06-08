@@ -122,5 +122,16 @@ module.exports = {
             if(err) throw err;
             console.log('Account deletion email sent.');
         });
+    },
+
+    popularity: function popularity(views, likes, blocks){
+      let Views = Math.floor(views * 0.25);
+      let Likes = Math.floor(likes * 0.50);
+      let Blocks = Math.floor(blocks * 0.50);
+
+      let popularity = (Views + Likes) - Blocks;
+      popularity = (popularity / 10) <= 10 ? Math.Floor(popularity / 10) + 5  : 10;
+
+      return (popularity);
     }
 }

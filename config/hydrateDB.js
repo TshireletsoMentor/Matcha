@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt')
 const ImgPlaceholder = require('random-image-placeholder')
 const imgGenerator = new ImgPlaceholder();
 var Url = imgGenerator.generate();
+const uniqid = require('uniqid');
 
 
 function age(dateOfBirth){
@@ -60,9 +61,41 @@ var interest3Arr = ["#Pets", "#Sports", "#Photography"];
 var interest4Arr = ["#Music", "#Learning", "#Art"];
 let userArray = [];
 
+//Creat admin account
+var sql1 = "SELECT * FROM users WHERE username = ?";
+connection.query(sql1, [
+  'admin'
+], (err, result) => {
+  if (err) throw err;
+
+  if(result.length == 0){
+    var adminArr = [];
+    const password = bcrypt.hashSync("Admin123", 10);
+    var adminObj = [
+      'admin',
+      'admin',
+      'admin', 
+      'DontReply.Matcha@gmail.com',
+      password,
+      uniqid() + uniqid(),
+      uniqid() + uniqid(),
+      'Y',
+      'Admin',
+      '1'
+    ];
+    adminArr.push(adminObj);
+
+    var sql2 = "INSERT INTO users (username, firstname, lastname, email, password, token, viewToken, verified, bio, extProfComp) VALUES ?";
+    connection.query(sql2, [adminArr], (err) => {
+      if (err) throw err;
+      console.log('\x1b[35m%s\x1b[0m', 'Admin added to database')
+    })
+  }
+})
 
 
 
+// Hydrate database with fake data
 for (var i = 0; i <= 1; i++){
 
   // var randYear = yearArr[Math.floor(Math.random()*yearArr.length)];
@@ -72,8 +105,8 @@ for (var i = 0; i <= 1; i++){
   var randGender = genderArr[Math.floor(Math.random()*genderArr.length)];
   var randOnline = onlineArr[Math.floor(Math.random()*onlineArr.length)];
   var hash = bcrypt.hashSync("123456Aa", 10);
-  var token = generateToken(32);
-  var viewToken = generateToken(32);
+  var token = uniqid() + uniqid();
+  var viewToken = uniqid() + uniqid();
   var randinterest1 = interest1Arr[Math.floor(Math.random()*interest1Arr.length)]; 
   var randinterest2 = interest2Arr[Math.floor(Math.random()*interest2Arr.length)];
   var randinterest3 = interest3Arr[Math.floor(Math.random()*interest3Arr.length)];
@@ -124,6 +157,6 @@ for (var i = 0; i <= 1; i++){
 var sql = "INSERT INTO users (username, firstname, lastname, email, altEmail, password, token, viewToken, verified, gender, sexualOrientation, dateOfBirth, age, bio, interest1, interest2, interest3, interest4, city, lat, lng, popularity, profilePicture, pic1, pic2, pic3, pic4, online, lastOn, suspended, extProfComp) VALUES ?";
 connection.query(sql, [userArray], (err) => {
   if (err) throw err;
-  console.log('\x1b[35m%s\x1b[0m', 'Database hydrated')
+  console.log('\x1b[35m%s\x1b[0m', 'Database hydrated');
+  connection.end();
 })
-connection.end();
