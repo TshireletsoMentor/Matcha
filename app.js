@@ -53,8 +53,7 @@ app.use('/like4', require('./routes/like4'));
 app.use('/login', require('./routes/login'));
 app.use('/logout', require('./routes/logout'));
 app.use('/myLikes', require('./routes/myLikes'));
-//
-app.use('myMatches', require('./routes/myMatches'))
+app.use('/myMatches', require('./routes/myMatches'));
 //
 app.use('/myProfile', require('./routes/myProfile'));
 app.use('/register', require('./routes/register'));

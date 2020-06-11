@@ -64,11 +64,11 @@
                         <span class="close cursor" onclick="closeModal()">&times;</span>
                         <div class="modal-content m-2">
                             
-                            <div class="mySlides">
+                            <div class="mySlides mt-2">
                             <div class="numbertext">1 / 5</div>
                                 <%if(result[0].profilePicture){ %>
                                   <% if (result[0].profilePicture.match(/userPic/g)) { %>
-                                    <img src="<%= result[0].profilePicture %>" style="width:50%">
+                                    <img src="/<%= result[0].profilePicture %>" style="width:50%">
                                   <% } else { %>
                                     <img src="<%= result[0].profilePicture %>" style="width:50%">
                                   <% } %>

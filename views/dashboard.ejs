@@ -26,20 +26,20 @@
                           <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
                       <% } else { %>
                         <% if (ret[i].profilePicture.match(/userPic/g)) { %>
-                          <img src="/<%= ret[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                          <img src="/<%= ret[i].profilePicture %>" alt="" width="150" height="150" class="border p-1 rounded-circle mb-3" style="filter: blur(8px);">
                         <% } else { %>
-                          <img src="<%= ret[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                          <img src="<%= ret[i].profilePicture %>" alt="" width="150" height="150" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
                         <% } %>
                     <% } %>
                   <% } %>
                   <% if (session.extProfComp == 1) { %>
                       <% if (!ret[i].profilePicture) { %>
-                          <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3">
+                          <img src="/default.jpg" alt="" width="150" height="150" class="img-thumbnail rounded-circle mb-3">
                       <% } else { %>
                         <% if (ret[i].profilePicture.match(/userPic/g)) { %>
-                          <img src="/<%= ret[i].profilePicture %>" alt="" class="img-thumbnail mb-3 rounded-circle">
+                          <img src="/<%= ret[i].profilePicture %>" alt="" width="150" height="150"  class="border p-1 mb-3 rounded-circle">
                         <% } else { %>
-                          <img src="<%= ret[i].profilePicture %>" alt="" class="img-thumbnail mb-3 rounded-circle">
+                          <img src="<%= ret[i].profilePicture %>" alt="" width="150" height="150" height="150" class="img-thumbnail mb-3 rounded-circle">
                         <% } %>
                       <% } %>
                   <% } %>
