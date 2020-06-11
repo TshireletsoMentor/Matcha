@@ -32,7 +32,7 @@ router.get('/:page', (req, res) => {
         session.username,
       ], (err, count) => {
         if (err) throw err;
-        const sql5 = "SELECT * FROM users WHERE username NOT IN (?, ?) AND suspended != 1 LIMIT ?, ?";
+        const sql5 = "SELECT * FROM users WHERE username NOT IN (?, ?) AND suspended != 1 ORDER BY RAND() LIMIT ?, ?";
         connection.query(sql5, [
           'admin',
           session.username,

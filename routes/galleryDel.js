@@ -9,9 +9,9 @@ router.post('/', (req, res) => {
     let error = [];
     let succes = [];
 
-    const sql1 = "SELECT * FROM users WHERE email = ?";
+    const sql1 = "SELECT * FROM users WHERE username = ?";
     connection.query(sql1, [
-      session.email
+      session.username
     ], (err, result) => {
       if(err) throw err;
         
@@ -22,14 +22,14 @@ router.post('/', (req, res) => {
         }
       }
 
-      const sql2 = "UPDATE users SET ?? = '', ?? = '', ?? = '', ?? = '' WHERE email = ?";
+      const sql2 = "UPDATE users SET ?? = '', ?? = '', ?? = '', ?? = '' WHERE username = ?";
       connection.query(sql2, [
         'pic1',
         'pic2',
         'pic3',
         'pic4',
-        session.email
-      ], (err, result) => {
+        session.username
+      ], (err, response) => {
         if(err) throw err;
         for(var i = 1; i <= 4; i++){
             var pic = "pic" + i;
@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
       })
     })
 
-    // dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
+    // dbObj.collection("users").find({"username": session.username}).toArray((err, result) => {
     //     if(err) throw err;
         
     //     for(var i = 1; i <= 4; i++){
@@ -51,7 +51,7 @@ router.post('/', (req, res) => {
     //         }
     //     }
 
-    //     dbObj.collection("users").updateOne({"email": session.email}, {$set: {"pic1": "", "pic2": "", "pic3": "", "pic4": ""}}, (err, response) => {
+    //     dbObj.collection("users").updateOne({"username": session.username}, {$set: {"pic1": "", "pic2": "", "pic3": "", "pic4": ""}}, (err, response) => {
     //         if(err) throw err;
     //         for(var i = 1; i <= 4; i++){
     //             var pic = "pic" + i;

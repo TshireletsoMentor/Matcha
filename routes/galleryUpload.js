@@ -38,15 +38,15 @@ router.get('/', (req, res) => {
     
     session = req.session;
 
-    if(!session.email){
+    if(!session.username){
         let errors = [];
         errors.push({msg: 'You have to login to view this resource'});
         res.render('login', {errors});
     }
     else{
-      const sql1 = "SELECT * FROM users WHERE email = ?";
+      const sql1 = "SELECT * FROM users WHERE username = ?";
       connection.query(sql1, [
-        session.email
+        session.username
       ], (err, result) => {
         if(err) throw err;
             
@@ -54,7 +54,7 @@ router.get('/', (req, res) => {
           res.render('imageUpload', {result});
       });
 
-      // dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
+      // dbObj.collection("users").find({"username": session.username}).toArray((err, result) => {
       //     if(err) throw err;
           
       //     if(result[0])
@@ -68,119 +68,119 @@ router.post('/', (req, res) => {
     let error = [];
     let succes = [];
 
-    upload(req, res, (err) => {
-        const { gallery } = req.body;
-        if(err){
-            error.push({ msg: err});
-            res.render('uploadImage', {error})
-        }
-        else{
-            // console.log(req.file);
-            // console.log(req.body);
-            if(req.file == undefined){
-                error.push({msg: "No FIle Selected!"})
+      upload(req, res, (err) => {
+          const { gallery } = req.body;
+          if(err){
+              error.push({ msg: err});
+              res.render('uploadImage', {error})
+          }
+          else{
+              // console.log(req.file);
+              // console.log(req.body);
+              if(req.file == undefined){
+                  error.push({msg: "No FIle Selected!"})
 
-                const sql2 = "SELECT * FROM users WHERE email = ?";
-                connection.query(sql2, [
-                  session.email
-                ], (err, result) => {
-                  if(err) throw err;
-
-                  res.render('imageUpload', {error, result});
-                });
-
-                // dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
-                //     if(err) throw err;
-                //     res.render('imageUpload', {error, result});
-                // }); 
-            }
-            else if(gallery == undefined){
-                error.push({ msg: "Select one of the fields you want to upload to!"});
-                
-                var path = "uploads/" + req.file.filename;
-
-                if(fs.existsSync(path)){
-                    functions.del(path);
-                    //console.log("File deleted")
-                }
-                
-                const sql3 = "SELECT * FROM users WHERE email = ?";
-                connection.query(sql3, [
-                  session.email
-                ], (err, result) => {
-                  if(err) throw err;
-                  
-                  res.render('imageUpload', {error, result});
-                });
-
-                // dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
-                //     if(err) throw err;
-                //     res.render('imageUpload', {error, result});
-                // });
-            }
-            else{
-                let i = req.body.gallery;
-                var pic = "pic" + i;
-                if(i == 1 || i == 2 || i == 3 || i == 4){
-                  const sql4 = "SELECT * FROM users WHERE email = ?"
-                  connection.query(sql4, [
-                    session.email
+                  const sql2 = "SELECT * FROM users WHERE username = ?";
+                  connection.query(sql2, [
+                    session.username
                   ], (err, result) => {
                     if(err) throw err;
 
-                    if(result[0][pic] != "" ){
-                      functions.del('uploads/' + result[0][pic]);
-                      //console.log("Del function for gallery working");
-                    }
-                    if(req.file){
-                      const sql5 = "UPDATE users SET ?? = ? WHERE email = ?";
-                      connection.query(sql5, [
-                        [pic],
-                        req.file.filename,
-                        session.email
-                      ], (err, result) => {
-                        if (err) throw err;
+                    res.render('imageUpload', {error, result});
+                  });
 
-                        const sql6 = "SELECT * FROM users WHERE email = ?";
-                        connection.query(sql6, [
-                          session.email
+                  // dbObj.collection("users").find({"username": session.username}).toArray((err, result) => {
+                  //     if(err) throw err;
+                  //     res.render('imageUpload', {error, result});
+                  // }); 
+              }
+              else if(gallery == undefined){
+                  error.push({ msg: "Select one of the fields you want to upload to!"});
+                  
+                  var path = "uploads/" + req.file.filename;
+
+                  if(fs.existsSync(path)){
+                      functions.del(path);
+                      //console.log("File deleted")
+                  }
+                  
+                  const sql3 = "SELECT * FROM users WHERE username = ?";
+                  connection.query(sql3, [
+                    session.username
+                  ], (err, result) => {
+                    if(err) throw err;
+                    
+                    res.render('imageUpload', {error, result});
+                  });
+
+                  // dbObj.collection("users").find({"username": session.username}).toArray((err, result) => {
+                  //     if(err) throw err;
+                  //     res.render('imageUpload', {error, result});
+                  // });
+              }
+              else{
+                  let i = req.body.gallery;
+                  var pic = "pic" + i;
+                  if(i == 1 || i == 2 || i == 3 || i == 4){
+                    const sql4 = "SELECT * FROM users WHERE username = ?"
+                    connection.query(sql4, [
+                      session.username
+                    ], (err, result) => {
+                      if(err) throw err;
+
+                      if(result[0][pic] != "" ){
+                        functions.del('uploads/' + result[0][pic]);
+                        // console.log("Del function for gallery working");
+                      }
+                      if(req.file){
+                        const sql5 = "UPDATE users SET ?? = ? WHERE username = ?";
+                        connection.query(sql5, [
+                          [pic],
+                          req.file.filename,
+                          session.username
                         ], (err, result) => {
                           if (err) throw err;
 
-                          succes.push({ msg: "Gallery Uploaded!"});
-                          //console.log(result)
-                          res.render('imageUpload', { succes, result})
+                          const sql6 = "SELECT * FROM users WHERE username = ?";
+                          connection.query(sql6, [
+                            session.username
+                          ], (err, result) => {
+                            if (err) throw err;
+
+                            succes.push({ msg: "Gallery Uploaded!"});
+                            //console.log(result)
+                            res.render('imageUpload', { succes, result})
+                          })
                         })
-                      })
-                    }
-                  })
+                      }
+                    })
 
-                  // dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
-                  //     if(err) throw err;
+                    // dbObj.collection("users").find({"username": session.username}).toArray((err, result) => {
+                    //     if(err) throw err;
 
-                  //     if(result[0][pic] != "" ){
-                  //         functions.del('uploads/' + result[0][pic]);
-                  //         //console.log("Del function for gallery working");
-                  //     }
-                      
-                  //     if(req.file){
-                  //         dbObj.collection("users").updateOne({"email": session.email}, {$set: {[pic]: req.file.filename}}, (err, reponse) => {
-                  //             if(err) throw err;
-      
-                  //             dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
-                  //                 if(err) throw err;
-      
-                  //                 succes.push({ msg: "Gallery Uploaded!"});
-                  //                 //console.log(result)
-                  //                 res.render('imageUpload', { succes, result})
-                  //             });
-                  //         });
-                  //     }
-                  // });
-                }
-            }
-        }
-    });
+                    //     if(result[0][pic] != "" ){
+                    //         functions.del('uploads/' + result[0][pic]);
+                    //         //console.log("Del function for gallery working");
+                    //     }
+                        
+                    //     if(req.file){
+                    //         dbObj.collection("users").updateOne({"username": session.username}, {$set: {[pic]: req.file.filename}}, (err, reponse) => {
+                    //             if(err) throw err;
+        
+                    //             dbObj.collection("users").find({"username": session.username}).toArray((err, result) => {
+                    //                 if(err) throw err;
+        
+                    //                 succes.push({ msg: "Gallery Uploaded!"});
+                    //                 //console.log(result)
+                    //                 res.render('imageUpload', { succes, result})
+                    //             });
+                    //         });
+                    //     }
+                    // });
+                  }
+              }
+          }
+      });
 });
 
 module.exports = router;

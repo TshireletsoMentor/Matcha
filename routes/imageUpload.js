@@ -38,15 +38,15 @@ router.get('/', (req, res) => {
     
     session = req.session;
 
-    if(!session.email){
+    if(!session.username){
         let errors = [];
         errors.push({msg: 'You have to login to view this resource'});
         res.render('login', {errors});
     }
     else{
-      const sql = "SELECT * FROM users WHERE email = ?";
+      const sql = "SELECT * FROM users WHERE username = ?";
       connection.query(sql, [
-        session.email
+        session.username
       ], (err, result) => {
         if(err) throw err;
           
@@ -81,36 +81,78 @@ router.post('/', (req, res) => {
         }
         else{
             if(req.file == undefined){
-                errors.push({msg: "No FIle Selected!"})
+                errors.push({msg: "No FIle Selected!"});
 
-                dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
-                    if(err) throw err;
-                    res.render('imageUpload', {errors, result});
-                });
-                
+                const sql1 = "SELECT * FROM users WHERE username = ?";
+                connection.query(sql1, [
+                  session.username
+                ], (err, result) => {
+                  if (err) throw err;
+
+                  res.render('imageUpload', {errors, result});
+                })
+
+                // dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
+                //     if(err) throw err;
+                //     res.render('imageUpload', {errors, result});
+                // });
             }
             else{
-                dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
-                    if(err) throw err;
+              const sql2 = "SELECT * FROM users WHERE username = ?";
+              connection.query(sql2, [
+                session.username
+              ], (err, result) => {
+                if (err) throw err;
 
-                    if(result[0].profilePicture != ""){
-                        functions.del('uploads/' + result[0].profilePicture);
-                        console.log("Del function for profile working");
-                    }
+                if(result[0].profilePicture){
+                  if(result[0].profilePicture.match(/userPic/g)){
+                    functions.del('uploads/' + result[0].profilePicture);
+                    // console.log("Del function for profile working");
+                  }
+                }
 
-                if(req.file){
-                    dbObj.collection("users").updateOne({"email": session.email}, {$set: {"profilePicture": req.file.filename}}, (err, reponse) => {
-                        if(err) throw err;
+                if (req.file){
+                  const sql3 = "UPDATE users SET profilePicture = ? WHERE username = ?";
+                  connection.query(sql3, [
+                    req.file.filename,
+                    session.username
+                  ], (err, response) => {
+                    if (err) throw err;
 
-                        dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
-                            if(err) throw err;
+                    const sql4 = "SELECT * FROM users WHERE username = ?";
+                    connection.query(sql4, [
+                      session.username
+                    ], (err, result) => {
+                      if (err) throw err;
 
-                            success.push({ msg: "Image Uploaded!"});
-                            res.render('imageUpload', { success, result})
-                        });
-                    });
-                    }
-                });
+                      success.push({ msg: "Image Uploaded!"});
+                      res.render('imageUpload', { success, result})
+                    })
+                  });
+                }
+              });
+
+                // dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
+                //     if(err) throw err;
+
+                //     if(result[0].profilePicture != ""){
+                //         functions.del('uploads/' + result[0].profilePicture);
+                //         console.log("Del function for profile working");
+                //     }
+
+                // if(req.file){
+                //     dbObj.collection("users").updateOne({"email": session.email}, {$set: {"profilePicture": req.file.filename}}, (err, reponse) => {
+                //         if(err) throw err;
+
+                //         dbObj.collection("users").find({"email": session.email}).toArray((err, result) => {
+                //             if(err) throw err;
+
+                //             success.push({ msg: "Image Uploaded!"});
+                //             res.render('imageUpload', { success, result})
+                //         });
+                //     });
+                //     }
+                // });
             }
         }
     });
