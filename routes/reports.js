@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const connection = require('../config/connect');
 const func = require('../functions');
 
 router.get('/', (req, res) => {
@@ -8,17 +9,22 @@ router.get('/', (req, res) => {
 
     if(!session.objId){
         let errors = [];
-        erros.push({ msg: 'You have to login to view this resource.'})
-        res.render('login', {errors});
+        res.render('login');
     }
     else if (session.email != "admin@matcha.com"){
         res.render('404');
     }
     else{
-        dbObj.collection("reports").find({}).toArray((err, ret) => {
-            if (err) throw err;
-            res.render('reports', { ret })
-        });
+      const sql = "SELECT * FROM reports";
+      connection.query(sql, [], (err, result) => {
+        if (err) throw err;
+
+        res.render('reports', { result });
+      })
+        // dbObj.collection("reports").find({}).toArray((err, ret) => {
+        //     if (err) throw err;
+        //     res.render('reports', { ret })
+        // });
     }
 });
 

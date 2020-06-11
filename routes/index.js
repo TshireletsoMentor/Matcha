@@ -16,11 +16,16 @@ router.get('/', (req, res) => {
       ], (err, result) => {
         if (err) throw err;
         
-        const sql4 = "SELECT COUNT(*) AS count FROM users";
-        connection.query(sql4, (err, count) => {
+        const sql4 = "SELECT COUNT(*) AS count FROM users WHERE username NOT IN (?, ?) AND suspended != 1";
+        connection.query(sql4, [
+          'admin',
+          session.username,
+        ], (err, count) => {
           if (err) throw err;
-          const sql5 = "SELECT * FROM users LIMIT ?, ?";
+          const sql5 = "SELECT * FROM users WHERE username NOT IN (?, ?) AND suspended != 1 LIMIT ?, ?";
           connection.query(sql5, [
+            'admin',
+            session.username,
             (perPage * page) - perPage,
             perPage,
           ], (err, ret) => {

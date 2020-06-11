@@ -1,5 +1,20 @@
-<%-include ('./include/nav')%>
-<%-include ('./include/gallery')%>
+<% if (session.suspended == 1) { %>
+  <%- include ('./include/nav')%>
+  
+  <div class="ml-3">
+      <br><br>
+      <p>Following a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
+  </div>
+<% } else { %>
+  <% if (session.username == 'admin') { %>
+    <%-include ('./include/adminNav')%>
+  <% } %>
+
+  <% if (session.username != 'admin') { %>
+    <%-include ('./include/nav')%>
+    <%-include ('./include/gallery')%>
+  <% } %>
+
 <center>
     <% if(session.extProfComp != 1) { %>
         <br><br><p>Please complete your extended profile to enjoy the site's full features</p>
@@ -8,14 +23,18 @@
     <% } %>
     <div class="container mt-2">
         <div class="card">
-                    <% if (session.extProfComp == 1){ %>
+        <% if (session.extProfComp == 1 ){ %>
         <div class="row mt-5">
             <div class="col-md-6 m-auto">
                 <br><br>
-                <% if(result[0].profilePicture == ""){ %>
+                <% if(!result[0].profilePicture){ %>
                     <img src="/default.jpg" class="img-responsive" alt="" style="width: 250px; height: 250px; border-radius: 50%; border: 2px solid lightgray;">
-                <%}else{ %>
+                <%}else { %>
+                  <% if (result[0].profilePicture.match(/userPic/g)) { %>
                     <img src="/<%= result[0].profilePicture %>" class="img-responsive hover-shadow cursor" alt="" style="width: 250px; height: 250px; border-radius: 50%; border: 2px solid lightgray;" onclick="openModal();currentSlide(1)">
+                  <% } else { %>
+                    <img src="<%= result[0].profilePicture %>" class="img-responsive hover-shadow cursor" alt="" style="width: 250px; height: 250px; border-radius: 50%; border: 2px solid lightgray;" onclick="openModal();currentSlide(1)">
+                  <% } %>
                 <%} %>
                 <br>
                 <div class="row mt-4">
@@ -47,8 +66,12 @@
                             
                             <div class="mySlides">
                             <div class="numbertext">1 / 5</div>
-                                <%if(result[0].profilePicture != ""){%>
-                                    <img src="/<%= result[0].profilePicture %>" style="width:50%">
+                                <%if(result[0].profilePicture){ %>
+                                  <% if (result[0].profilePicture.match(/userPic/g)) { %>
+                                    <img src="<%= result[0].profilePicture %>" style="width:50%">
+                                  <% } else { %>
+                                    <img src="<%= result[0].profilePicture %>" style="width:50%">
+                                  <% } %>
                                 <%}%>
                             </div>
 
@@ -84,9 +107,13 @@
                             <a class="next" onclick="plusSlides(1)">&#10095;</a>
                             
                             <div class="row m-3">
-                                <%if(result[0].profilePicture != ""){%>
+                                <%if(result[0].profilePicture){ %>
                                     <div class="column">
+                                      <% if (result[0].profilePicture.match(/userPic/g)) { %>
                                         <img class="demo cursor" src="/<%= result[0].profilePicture %>" style="width:50%" onclick="currentSlide(1)" alt="">
+                                      <% } else { %>
+                                        <img class="demo cursor" src="<%= result[0].profilePicture %>" style="width:50%" onclick="currentSlide(1)" alt="">
+                                      <% } %>
                                     </div>
                                 <%}%>
                                 <%if(result[0].pic1 != ""){%>
@@ -94,17 +121,17 @@
                                         <img class="demo cursor" src="/<%= result[0].pic1 %>" style="width:50%" onclick="currentSlide(2)" alt="">
                                     </div>
                                 <%}%>
-                                <%if(result[0].pic1 != ""){%>
+                                <%if(result[0].pic2 != ""){%>
                                     <div class="column">
                                     <img class="demo cursor" src="/<%= result[0].pic2 %>" style="width:50%" onclick="currentSlide(3)" alt="">
                                     </div>
                                 <%}%>
-                                <%if(result[0].pic1 != ""){%>
+                                <%if(result[0].pic3 != ""){%>
                                     <div class="column">
                                         <img class="demo cursor" src="/<%= result[0].pic3 %>" style="width:50%" onclick="currentSlide(4)" alt="">
                                     </div>
                                 <%}%>
-                                <%if(result[0].pic1 != ""){%>
+                                <%if(result[0].pic4 != ""){%>
                                     <div class="column">
                                         <img class="demo cursor" src="/<%= result[0].pic4 %>" style="width:50%" onclick="currentSlide(5)" alt="">
                                     </div>
@@ -123,9 +150,9 @@
                     <p>Gender: <strong><%= result[0].gender %></strong></p><hr>
                     <p>Sexual Orientation: <strong><%= result[0].sexualOrientation %></strong></p><hr>
                     <p>Age: <strong><%= result[0].age %></strong></p><hr>
-                    <p>City: <strong><%= result[0].location.city %></strong></p><hr>
+                    <p>City: <strong><%= result[0].city %></strong></p><hr>
                     <p>Bio: <strong><%= result[0].bio %></strong></p><hr>
-                    <p>Interests: <strong><%= result[0].interests.i1 %> <%= result[0].interests.i2 %> <%= result[0].interests.i3 %> <%= result[0].interests.i4 %></strong></p><hr>
+                    <p>Interests: <strong><%= result[0].interest1 %> <%= result[0].interest2 %> <%= result[0].interest3 %> <%= result[0].interest4 %></strong></p><hr>
                 </div>
             </div>
         </div>
@@ -134,4 +161,5 @@
     </div>
     </div>
 </center>
+<% } %>
 <%- include ('./include/footer')%>

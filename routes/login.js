@@ -11,48 +11,62 @@ const functions = require('../functions');
 router.get('/', (req, res) => {
     
     session = req.session;
+    let perPage = 8;
+    let page = req.params.page || 1;
 
-    if(session.email){
-      let perPage = 8;
-      let page = req.params.page || 1;
-      
-      const sql1 = "SELECT * FROM users WHERE email = ?";
-      connection.query(sql1, [
-        session.email
-      ], (err, result) => {
-        if (err) throw err;
-        if (session.username == 'admin'){
-          var sqlY = "SELECT COUNT(*) AS count FROM users WHERE online = 'Y'";
-        }else{
-          var sqlY = "SELECT COUNT(*) AS count FROM users"
-        }
-        connection.query(sqlY, (err, count) => {
+    if(session.username){
+      if(session.username != 'admin'){
+        const sql3 = "SELECT * FROM users WHERE username = ?";
+        connection.query(sql3, [
+          session.username
+          ], (err, result) => {
+            if (err) throw err;
+            const sql4 = "SELECT COUNT(*) AS count FROM users WHERE username NOT IN (?, ?) AND suspended != 1";
+            connection.query(sql4, [
+              'admin',
+              session.username,                            
+            ], (err, count) => {
+              if (err) throw err;
+              const sql5 = "SELECT * FROM users WHERE username NOT IN (?, ?) AND suspended != 1 ORDER BY RAND() LIMIT ?, ? ";
+              connection.query(sql5, [
+                'admin',
+                session.username,
+                (perPage * page) - perPage,
+                perPage,
+              ], (err, ret) => {
+                if (err) throw err;
+                res.render('dashboard', { result, ret, current: page, pages: Math.ceil(count[0].count / perPage) })
+              })
+            })
+        })
+      } else {
+        const sql4 = "SELECT COUNT(*) AS count FROM users WHERE online = 'Y'";
+        connection.query(sql4, (err, count) => {
           if (err) throw err;
-          const sql5 = "SELECT * FROM users LIMIT ?, ?";
+          const sql5 = "SELECT * FROM users WHERE username != 'admin' AND online = 'Y' AND suspended != 1 LIMIT ?, ?";
           connection.query(sql5, [
             (perPage * page) - perPage,
             perPage,
           ], (err, ret) => {
             if (err) throw err;
-            res.render('dashboard', { result, ret, current: page, pages: Math.ceil(count[0].count / perPage), count: count[0].count });
+            res.render('dashboard', { result, ret, current: page, pages: Math.ceil(count[0].count / perPage), count: count[0].count })
           })
         })
-      })
-
-        // let errors = [];
-        // errors.push({msg: 'You have to logout to view this this page'});
-        // client.connect((err, db) => {
-        //     if(err) throw err;
-
-        //     dbObj = client.db(dbname);
-
-        //     dbObj.collection("users").find({}).toArray((err, result) => {
-        //         if(err) throw err;
-
-        //         res.render('dashboard', { result });
-        //     })
-        // });
+      }
     }
+      // let errors = [];
+      // errors.push({msg: 'You have to logout to view this this page'});
+      // client.connect((err, db) => {
+      //     if(err) throw err;
+
+      //     dbObj = client.db(dbname);
+
+      //     dbObj.collection("users").find({}).toArray((err, result) => {
+      //         if(err) throw err;
+
+      //         res.render('dashboard', { result });
+      //     })
+      // });
     else{
       res.render('login');
     }
@@ -131,11 +145,16 @@ router.post('/', (req, res) => {
                         Username
                         ], (err, result) => {
                           if (err) throw err;
-                          const sql4 = "SELECT COUNT(*) AS count FROM users";
-                          connection.query(sql4, (err, count) => {
+                          const sql4 = "SELECT COUNT(*) AS count FROM users WHERE username NOT IN (?, ?) AND suspended != 1";
+                          connection.query(sql4, [
+                            'admin',
+                            session.username,                            
+                          ], (err, count) => {
                             if (err) throw err;
-                            const sql5 = "SELECT * FROM users LIMIT ?, ?";
+                            const sql5 = "SELECT * FROM users WHERE username NOT IN (?, ?) AND suspended != 1 ORDER BY RAND() LIMIT ?, ?";
                             connection.query(sql5, [
+                              'admin',
+                              session.username,
                               (perPage * page) - perPage,
                               perPage,
                             ], (err, ret) => {
@@ -154,7 +173,7 @@ router.post('/', (req, res) => {
                     const sql4 = "SELECT COUNT(*) AS count FROM users WHERE online = 'Y'";
                     connection.query(sql4, (err, count) => {
                       if (err) throw err;
-                      const sql5 = "SELECT * FROM users LIMIT ?, ?";
+                      const sql5 = "SELECT * FROM users WHERE username != 'admin' AND online = 'Y' AND suspended != 1 LIMIT ?, ?";
                       connection.query(sql5, [
                         (perPage * page) - perPage,
                         perPage,

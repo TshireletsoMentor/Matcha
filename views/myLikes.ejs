@@ -4,79 +4,87 @@
     <p>Follwing a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
 <% } %>
 <% if (session.suspended != 1) { %> 
-    <% if(result[0].extProfComp != 1) { %>
-        <center>
-            <div class="card m-3">
-                <strong><p>Please complete your extended profile to enjoy the site's full features</p></strong>
-                <a href="/updateProfile">Update Profile</a>
-            </div> 
-        </center>
-    <% } %>
-    <% if(result[0].extProfComp == 1){%>
-        <div class="container card mt-2">
-        <h1 class="mt-4"><i class="far fa-heart"></i> My likes</h1><br>
-        <%- include ('./partials/messages') %>
-        <div class="d-sm-flex flex-row flex-wrap">
-            <% for (let i = 0; i < ret.length; i++) { %>
-                <% if (result[0].myLikes.includes("" + ret[i]._id)) { %>
-                    <div class="col-lg-3 col-md-6 mb-3">
-                        <div class="card h-100">
-                            <div class="card-body">
-                                    <% if (session.extProfComp != 1) { %>
-                                        <% if (!ret[i].profilePicture) { %>
-                                            <img src="/default.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3" style="filter: blur(8px);">
-                                        <% } else { %>
-                                        <img src="/<%= ret[i].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3" style="filter: blur(8px);">
-                                        <% } %>
-                                    <% } %>
-                                    <% if (session.extProfComp == 1) { %>
-                                        <% if (!ret[i].profilePicture) { %>
-                                            <img src="/default.jpg" alt="" class="img-fluid rounded-circle w-50 mb-3">
-                                        <% } else { %>
-                                        <img src="/<%= ret[i].profilePicture %>" alt="" class="img-fluid rounded-circle w-50 mb-3">
-                                        <% } %>
-                                    <% } %>
-                                    <div>
-                                        <% if (ret[i].online == 'Y') { %> 
-                                            <h3><i data-toggle="tooltip" data-placement="top" title="Online">&#x1F49A</i> <%= ret[i].firstname %> <%= ret[i].age %></h3>
-                                        <% } else { %>
-                                            <h3><i data-toggle="tooltip" data-placement="top" title="last seen <%- ret[i].lastOn%>">&#x1F494</i> <%= ret[i].firstname %> <%= ret[i].age %></h3>
-                                        <% } %>
-                                    </div>
-                                    <strong><h5><%- ret[i].location.city%></h5></strong>
-                                    <% if (ret[i].bio.length > 75) { %>
-                                        <p><%= ret[i].bio.substring(0,75) %>...</p>
-                                    <% }else { %>
-                                        <p><%= ret[i].bio.substring(0,75) %></p>
-                                    <% } %>
-                                    <div class="d-flex flex-row justify-content-center">
-                                        <div class="p-3">
-                                            <a href="/like2/<%- ret[i].viewToken %>"  data-toggle="tooltip" data-placement="top" title="Like">
-                                                <i class="fa fa-heart"></i>
-                                            </a>
-                                        </div>
-                                        <div class="p-3">
-                                            <a href="/viewProf/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
-                                                <i class="fa fa-eye"></i>
-                                            </a>
-                                        </div>
-                                        <div class="p-3">
-                                            <a href="/report/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Report">
-                                                <i class="fa fa-exclamation-triangle"></i>
-                                            </a>
-                                        </div>
-                                        <div class="p-3">
-                                            <i class="fa fa-star" data-toggle="tooltip" data-placement="top" title="Popularity"> <%= ret[i].popularity %> </i>
-                                        </div>
-                                    </div>
-                            </div>
-                        </div>
+  <% if(session.extProfComp != 1) { %>
+    <center>
+      <div class="card m-3">
+        <strong><p>Please complete your extended profile to enjoy the site's full features</p></strong>
+        <a href="/updateProfile">Update Profile</a>
+      </div> 
+    </center>
+  <% } else { %>
+    <div class="container mt-2">
+      <h1 class="mt-4"><i class="far fa-heart"></i> My likes</h1><br>
+      <%- include ('./partials/messages') %>
+      <div class="d-sm-flex flex-row flex-wrap">
+          <% for (let i = 0; i < result.length; i++) { %>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                    <% if (session.extProfComp != 1) { %>
+                      <% if (!result[i].profilePicture) { %>
+                          <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                      <% } else { %>
+                        <% if (result[i].profilePicture.match(/userPic/g)) {%>
+                          <img src="/<%= result[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                        <% } else { %>
+                          <img src="<%= result[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);"> 
+                        <% } %>
+                      <% } %>
+                    <% } %>
+                    <% if (session.extProfComp == 1) { %>
+                      <% if (!result[i].profilePicture) { %>
+                          <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3">
+                      <% } else { %>
+                        <% if (result[i].profilePicture.match(/userPic/g)) {%>
+                          <img src="/<%= result[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3">
+                        <% } else { %>
+                          <img src="<%= result[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3">
+                        <% } %>
+                      <% } %>
+                    <% } %>
+                    <div>
+                        <% if (result[i].online == 'Y') { %> 
+                            <h3><i data-toggle="tooltip" data-placement="top" title="Online">&#x1F49A</i> <%= result[i].firstname %> <%= result[i].age %></h3>
+                        <% } else { %>
+                            <h3><i data-toggle="tooltip" data-placement="top" title="last seen <%- result[i].lastOn%>">&#x1F494</i> <%= result[i].firstname %> <%= result[i].age %></h3>
+                        <% } %>
                     </div>
-                <br>
-                <% } %>
-            <% } %>
+                    <strong><h5><%- result[i].city%></h5></strong>
+                    <% if (result[i].bio.length > 75) { %>
+                        <p><%= result[i].bio.substring(0,75) %>...</p>
+                    <% }else { %>
+                        <p><%= result[i].bio.substring(0,75) %></p>
+                    <% } %>
+                    </div>
+                    <div class="card-footer">
+                      <div class="d-flex flex-row justify-content-center">
+                          <div class="p-2">
+                              <a href="/like2/<%- result[i].viewToken %>"  data-toggle="tooltip" data-placement="top" title="Like">
+                                  <i class="fa fa-heart"></i>
+                              </a>
+                          </div>
+                          <div class="p-2">
+                              <a href="/viewProf/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
+                                  <i class="fa fa-eye"></i>
+                              </a>
+                          </div>
+                          <div class="p-2">
+                              <a href="/report/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Report">
+                                  <i class="fa fa-exclamation-triangle"></i>
+                              </a>
+                          </div>
+                          <div class="p-2">
+                              <i class="fa fa-star" data-toggle="tooltip" data-placement="top" title="Popularity"> <%= result[i].popularity %> </i>
+                          </div>
+                      </div>
+                    </div>
+                  
+                </div>
             </div>
-    <% } %>
-    </div>
+            <br>
+          <% } %>
+        </div>
+      <% } %>
+  </div>
 <% } %>
 <%- include ('./include/footer')%>

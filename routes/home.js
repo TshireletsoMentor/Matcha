@@ -5,25 +5,19 @@ const connection = require('../config/connect');
 router.get('/', (req, res) => {
   let errors = [];
 
+  session = req.session;
+
   errors.push({ msg: 'No page provided!'});
-  const sql1 = 'SELECT * FROM users WHERE email = ?';
-  connection.query(sql1, [
-    session.email
-  ], (err, result) => {
-    if (err) throw err;
+  
+  res.redirect('login');
 
-    const sql2 = "SELECT * FROM users";
-    connection.query(sql2, [], (err, ret) => {
-      if (err) throw err;
-
-      res.render("dashboard", { result, ret, errors});
-    })
-  })
 });
 
 router.get('/:page', (req, res) => {
   let perPage = 8;
   let page = req.params.page || 1;
+
+  session = req.session;
 
   if (session.username !== 'admin'){
     const sql3 = "SELECT * FROM users WHERE email = ?";
@@ -32,11 +26,16 @@ router.get('/:page', (req, res) => {
     ], (err, result) => {
       if (err) throw err;
 
-      const sql4 = "SELECT COUNT(*) AS count FROM users";
-      connection.query(sql4, (err, count) => {
+      const sql4 = "SELECT COUNT(*) AS count FROM users WHERE username NOT IN (?, ?) AND suspended != 1";
+      connection.query(sql4, [
+        'admin',
+        session.username,
+      ], (err, count) => {
         if (err) throw err;
-        const sql5 = "SELECT * FROM users LIMIT ?, ?";
+        const sql5 = "SELECT * FROM users WHERE username NOT IN (?, ?) AND suspended != 1 LIMIT ?, ?";
         connection.query(sql5, [
+          'admin',
+          session.username,
           (perPage * page) - perPage,
           perPage,
         ], (err, ret) => {

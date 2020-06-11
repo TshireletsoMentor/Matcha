@@ -96,7 +96,7 @@ connection.query(sql1, [
 
 
 // Hydrate database with fake data
-for (var i = 0; i <= 1; i++){
+for (var i = 0; i <= 5; i++){
 
   // var randYear = yearArr[Math.floor(Math.random()*yearArr.length)];
   // var randMonth = monthArr[Math.floor(Math.random()*monthArr.length)];

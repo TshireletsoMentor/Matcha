@@ -17,7 +17,7 @@
 
 <div class="d-sm-flex flex-row flex-wrap">
 <% for (let i = 0; i < ret.length; i++) { %>
-    <%if((ret[i].id != session.objId || ret[i].extProfComp != 1) && ret[i].username != 'admin' ){%>
+    <% if((ret[i].id != session.objId || ret[i].extProfComp != 1) && ret[i].username != 'admin' && ret[i].suspended != 1 ){%>
     <div class="col-lg-3 col-md-6 mb-3">
             <div class="card h-100">
                 <div class="card-body text-center">
@@ -25,12 +25,16 @@
                       <% if (!ret[i].profilePicture) { %>
                           <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
                       <% } else { %>
+                        <% if (ret[i].profilePicture.match(/userPic/g)) { %>
                           <img src="/<%= ret[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
-                      <% } %>
+                        <% } else { %>
+                          <img src="<%= ret[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                        <% } %>
+                    <% } %>
                   <% } %>
                   <% if (session.extProfComp == 1) { %>
                       <% if (!ret[i].profilePicture) { %>
-                          <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle m-2">
+                          <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3">
                       <% } else { %>
                         <% if (ret[i].profilePicture.match(/userPic/g)) { %>
                           <img src="/<%= ret[i].profilePicture %>" alt="" class="img-thumbnail mb-3 rounded-circle">
@@ -39,18 +43,20 @@
                         <% } %>
                       <% } %>
                   <% } %>
-                  <% if (ret[i].online == 'Y') { %> 
-                      <h3><i data-toggle="tooltip" data-placement="top" title="ONLINE"> &#x1F49A</i> <%= ret[i].firstname %> <%= ret[i].age %></h3>
-                  <% } else { %>
-                      <h3><i data-toggle="tooltip" data-placement="top" title="LAST SEEN: <%- ret[i].lastOn%>">&#x1F494</i> <%= ret[i].firstname %> <%= ret[i].age %></h3>
-                  <% } %>
-                  <strong><h5><%- ret[i].city%></h5></strong>
-                  <%  if(ret[i].bio.length > 75){%>
-                          <p><%= ret[i].bio.substring(0, 75) + "..."; %></p>
-                  <%  }else{ %>
-                          <p><%= ret[i].bio; %></p>
-                  <%  } %>
-                </div>
+                  <div>
+                    <% if (ret[i].online == 'Y') { %> 
+                        <h3><i data-toggle="tooltip" data-placement="top" title="ONLINE"> &#x1F49A</i> <%= ret[i].firstname %> <%= ret[i].age %></h3>
+                    <% } else { %>
+                        <h3><i data-toggle="tooltip" data-placement="top" title="LAST SEEN: <%- ret[i].lastOn%>">&#x1F494</i> <%= ret[i].firstname %> <%= ret[i].age %></h3>
+                    <% } %>
+                  </div>
+                    <strong><h5><%- ret[i].city%></h5></strong>
+                    <%  if(ret[i].bio.length > 75){%>
+                            <p><%= ret[i].bio.substring(0, 75) + "..."; %></p>
+                    <%  }else{ %>
+                            <p><%= ret[i].bio; %></p>
+                    <%  } %>
+                </div> 
                 <div class="card-footer">
                   <div class="d-sm-flex flex-row justify-content-center">
                       <div class="p-2">
@@ -76,7 +82,7 @@
             </div>
         </div>
         <br>
-        <% }%>
+        <% } %>
     <% } %>
     </div>
     <div >
