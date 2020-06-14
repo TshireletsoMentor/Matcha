@@ -68,7 +68,9 @@ console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"blocked\" CREATED');
 connection.query(`CREATE TABLE IF NOT EXISTS profileviews 
 ( id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, 
   username VARCHAR(100) NOT NULL, 
-  viewed VARCHAR(100) NOT NULL
+  viewed VARCHAR(100) NOT NULL,
+  date DATETIME,
+  processed INT DEFAULT \'0\'
 )`);
 console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"profileViews\" CREATED');
 

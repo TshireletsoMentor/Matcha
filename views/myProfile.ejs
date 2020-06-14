@@ -16,8 +16,26 @@
                         <%if(result[0].profilePicture == "") {%>
                             <img src="default.jpg" alt="default-avatar" style="width: 250px; height: 250px; border-radius: 50%; border: solid 2px lightgray">
                         <%}else{%>
-                            <img src="<%- result[0].profilePicture%>" alt="" class="img-responsive" style="width: 250px; height: 250px; border-radius: 50%; border: solid 2px lightgray">
+                          <% if (result[0].profilePicture.match(/userPic/g)) { %>
+                            <img src="/<%= result[0].profilePicture %>" class="img-responsive hover-shadow cursor" alt="" style="width: 250px; height: 250px; border-radius: 50%; border: 2px solid lightgray;" onclick="openModal();currentSlide(1)">
+                          <% } else { %>
+                            <img src="<%= result[0].profilePicture %>" class="img-responsive hover-shadow cursor" alt="" style="width: 250px; height: 250px; border-radius: 50%; border: 2px solid lightgray;" onclick="openModal();currentSlide(1)">
+                          <% } %>
                         <%}%>
+                        <div class="d-flex flex-row mt-2 justify-content-center">
+                          <% if(result[0].pic1){%>
+                              <img src="/<%= result[0].pic1 %>" alt="" class="m-1" style="width: 100px; height: 100px; border: solid 2px lightgray">
+                          <%}%>
+                          <% if(result[0].pic2){%>
+                              <img src="/<%= result[0].pic2 %>" alt="" class="m-1" style="width: 100px; height: 100px; border: solid 2px lightgray">
+                          <%}%>
+                          <% if(result[0].pic3){%>
+                              <img src="/<%= result[0].pic3 %>" alt="" class="m-1" style="width: 100px; height: 100px; border: solid 2px lightgray">
+                          <%}%>
+                          <% if(result[0].pic4){%>
+                              <img src="/<%= result[0].pic4 %>" alt="" class="m-1" style="width: 100px; height: 100px; border: solid 2px lightgray">
+                          <%}%>
+                      </div>
                         <br><br><div class="list-group">
                             <p class="list-group-item" >First Name: <strong><%- result[0].firstname%></strong></p>
                             <p class="list-group-item">Last Name: <strong><%- result[0].lastname%></strong></p>

@@ -34,7 +34,9 @@ app.use(session({
 //routes
 app.use('/', require('./routes/index'));
 //
+app.use('/block', require('./routes/block'));
 app.use('/blockReq', require('./routes/blockReq'));
+app.use('/contact', require('./routes/contact'));
 app.use('/home', require('./routes/home'));
 app.use('/deleteAcc', require('./routes/deleteAcc'));
 app.use('/deleteAcc2', require('./routes/deleteAcc2'));
@@ -61,6 +63,7 @@ app.use('/report', require('./routes/report'));
 app.use('/reports', require('./routes/report'));
 app.use('/resetPassword', require('./routes/resetPassword'));
 app.use('/search', require('./routes/search'));
+app.use('/seeBlocked', require('./routes/seeBlocked'));
 //
 app.use('/suspendAcc', require('./routes/suspendAcc'));
 //

@@ -74,14 +74,14 @@
                           </a>
                         </div>
                         <div class="p-2">
-                          <a href="/block/<%- result[i].viewToken%>">
+                          <a href="/block/<%- result[i].viewToken%>" onclick="return confirm('Are you sure, blocking is permanent?')">
                             <i data-toggle="tooltip" data-placement="top" title="Block" class="fa fa-window-close"></i>
-                          </a>
+                          </a> 
                         </div>
                         <div class="p-2">
-                            <a href="/report/<%- result[i].viewToken%>">
-                                <i data-toggle="tooltip" data-placement="top" title="Report Account" class="fa fa-exclamation-triangle"></i>
-                            </a>
+                          <a href="/report/<%- result[i].viewToken%>">
+                              <i data-toggle="tooltip" data-placement="top" title="Report Account" class="fa fa-exclamation-triangle"></i>
+                          </a>
                         </div>
                         <div class="p-2">
                             <i data-toggle="tooltip" data-placement="top" title="Popularity" class="fa fa-star" > <%= result[i].popularity %> </i>

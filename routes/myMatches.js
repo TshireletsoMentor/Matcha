@@ -11,6 +11,9 @@ router.get('/', (req, res) => {
         let errors = []
         errors.push({msg: 'You have to log in to view this resource'});
         res.render('login', {errors});
+
+    }else if(session.username == 'admin'){
+      res.redirect('login');
     }
     else{
       const sql = "SELECT * FROM users WHERE username IN (SELECT liked FROM likes WHERE username = ? AND liked IN (SELECT username FROM likes WHERE liked = ?))";

@@ -13,14 +13,15 @@ router.get('/', (req, res) => {
   }else if (session.username == 'admin') {
     res.redirect('login');
   } else {
-    const sql = "SELECT * FROM users WHERE username IN (SELECT liked FROM likes WHERE username = ?) AND suspended != 1";
-    connection.query(sql, [
-      session.username
-    ], (err, result) => {
-      if (err) throw err;
+    res.redirect('myMatches');
+    // const sql = "SELECT * FROM users WHERE username IN (SELECT liked FROM likes WHERE username = ?) AND suspended != 1";
+    // connection.query(sql, [
+    //   session.username
+    // ], (err, result) => {
+    //   if (err) throw err;
 
-      res.render('myMatches', { result });
-    })
+    //   res.render('myMatches', { result });
+    // })
   }
 })
 
@@ -55,14 +56,15 @@ router.get('/:viewToken', (req, res) => {
       }
 
       setTimeout(() => {
-        const sql2 = "SELECT * FROM users WHERE username IN (SELECT liked FROM likes WHERE username = ?) AND suspended != 1";
-        connection.query(sql2, [
+        const sql = "SELECT * FROM users WHERE username IN (SELECT liked FROM likes WHERE username = ? AND liked IN (SELECT username FROM likes WHERE liked = ?))";
+        connection.query(sql, [
+          session.username,
           session.username
         ], (err, result) => {
           if (err) throw err;
-
-          res.render('myMatches', { result });
-        });
+  
+          res.render('myMatches', { result })
+        })
       }, 100)
     });
   }
