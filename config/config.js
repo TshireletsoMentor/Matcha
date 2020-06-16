@@ -61,7 +61,8 @@ console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"likes\" CREATED');
 connection.query(`CREATE TABLE IF NOT EXISTS blocked 
 ( id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, 
   username VARCHAR(100) NOT NULL, 
-  blocked VARCHAR(100) NOT NULL
+  blocked VARCHAR(100) NOT NULL,
+  processed INT DEFAULT \'0\'
 )`);
 console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"blocked\" CREATED');
 
@@ -70,7 +71,6 @@ connection.query(`CREATE TABLE IF NOT EXISTS profileviews
   username VARCHAR(100) NOT NULL, 
   viewed VARCHAR(100) NOT NULL,
   date DATETIME,
-  processed INT DEFAULT \'0\'
 )`);
 console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"profileViews\" CREATED');
 
@@ -79,7 +79,8 @@ connection.query(`CREATE TABLE IF NOT EXISTS reports
   complainant VARCHAR(100) NOT NULL,
   complaintAbout VARCHAR(100) NOT NULL,
   subject VARCHAR(255) NOT NULL, 
-  text VARCHAR(10000) NOT NULL
+  text VARCHAR(10000) NOT NULL,
+  processed INT DEFAULT \'0\' 
 )`);
 console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"reports\" CREATED');
 

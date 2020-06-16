@@ -58,14 +58,17 @@ app.use('/myLikes', require('./routes/myLikes'));
 app.use('/myMatches', require('./routes/myMatches'));
 //
 app.use('/myProfile', require('./routes/myProfile'));
+app.use('/processReq', require('./routes/processReq'));
+app.use('/processReport', require('./routes/processReport'));
 app.use('/register', require('./routes/register'));
 app.use('/report', require('./routes/report'));
-app.use('/reports', require('./routes/report'));
+app.use('/reports', require('./routes/reports'));
 app.use('/resetPassword', require('./routes/resetPassword'));
 app.use('/search', require('./routes/search'));
 app.use('/seeBlocked', require('./routes/seeBlocked'));
 //
 app.use('/suspendAcc', require('./routes/suspendAcc'));
+app.use('/suspendAcc2', require('./routes/suspendAcc2'));
 //
 app.use('/verify', require('./routes/verify'));
 app.use('/viewBy', require('./routes/viewBy'));

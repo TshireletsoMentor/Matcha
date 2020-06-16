@@ -7,19 +7,34 @@ router.get('/', (req, res) => {
 
     session = req.session;
 
-    if(!session.objId){
+    if(!session.username){
         let errors = [];
-        res.render('login');
+        errors.push({ msg: "You have to login to view this resource."});
+        res.render('login', {errors});
     }
-    else if (session.email != "admin@matcha.com"){
+    else if (session.username != "admin"){
         res.render('404');
     }
     else{
       const sql = "SELECT * FROM reports";
-      connection.query(sql, [], (err, result) => {
+      connection.query(sql, [], (err, ret) => {
         if (err) throw err;
 
-        res.render('reports', { result });
+        const sql2 = "SELECT * FROM users WHERE username = ?";
+        connection.query(sql2, [
+          ret[0].complainant
+        ], (err, ret1) => {
+          if (err) throw err;
+
+          const sql3 = "SELECT * FROM users WHERE username = ?";
+          connection.query(sql3, [
+            ret[0].complaintAbout
+          ], (err, ret2) => {
+            if (err) throw err;
+
+            res.render('reports', { ret, ret1, ret2 });
+          })
+        })
       })
         // dbObj.collection("reports").find({}).toArray((err, ret) => {
         //     if (err) throw err;

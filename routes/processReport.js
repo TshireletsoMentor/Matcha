@@ -18,8 +18,8 @@ router.get('/', (req, res) => {
   }
 });
 
-router.get('/:userId', (req, res) => {
-    var userId = req.params.userId;
+router.get('/:reportId', (req, res) => {
+    var reportId = req.params.reportId;
     let errors = [];
     session = req.session;
 
@@ -32,17 +32,17 @@ router.get('/:userId', (req, res) => {
         res.render('404');
     }
     else {
-      const sql1 = "UPDATE users SET suspended = '1' WHERE id = ?";
-      connection.query(sql1, [
-        userId
+      const sql = "UPDATE reports SET processed = '1' WHERE id = ?";
+      connection.query(sql, [
+        reportId
       ], (err, response) => {
         if (err) throw err;
-  
-        const sql = "SELECT * FROM blocked WHERE processed = '0'";
-        connection.query(sql, [], (err, result) => {
-          if (err) throw err;
-    
-          res.render('blockReq', { result });
+
+          const sql = "SELECT * FROM blocked WHERE processed = '0'";
+          connection.query(sql, [], (err, result) => {
+            if (err) throw err;
+      
+            res.render('blockReq', { result });
         })
       })
     }

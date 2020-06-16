@@ -58,32 +58,32 @@
                     </div>
                     <div class="card-footer">
                       <div class="d-flex flex-row justify-content-center">
-                        <div class="p-2">
+                        <div class="p-1">
                             <a href="/like3/<%- result[i].viewToken %>">
                                 <i data-toggle="tooltip" data-placement="top" title="Dislike" class="fa fa-heart" style="color:black"></i>
                             </a>
                         </div>
-                        <div class="p-2">
+                        <div class="p-1">
                             <a href="/viewProf/<%- result[i].viewToken%>">
                                 <i data-toggle="tooltip" data-placement="top" title="View Profile" class="fa fa-eye" ></i>
                             </a>
                         </div>
-                        <div class="p-2">
+                        <div class="p-1">
                           <a href="/chat/<%- result[i].viewToken%>">
                               <i data-toggle="tooltip" data-placement="top" title="Chat" class="fa fa-comments"></i>
                           </a>
                         </div>
-                        <div class="p-2">
+                        <div class="p-1">
                           <a href="/block/<%- result[i].viewToken%>" onclick="return confirm('Are you sure, blocking is permanent?')">
                             <i data-toggle="tooltip" data-placement="top" title="Block" class="fa fa-window-close"></i>
                           </a> 
                         </div>
-                        <div class="p-2">
+                        <div class="p-1">
                           <a href="/report/<%- result[i].viewToken%>">
                               <i data-toggle="tooltip" data-placement="top" title="Report Account" class="fa fa-exclamation-triangle"></i>
                           </a>
                         </div>
-                        <div class="p-2">
+                        <div class="p-1">
                             <i data-toggle="tooltip" data-placement="top" title="Popularity" class="fa fa-star" > <%= result[i].popularity %> </i>
                         </div>
                     </div>

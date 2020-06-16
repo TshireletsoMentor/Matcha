@@ -1,54 +1,75 @@
 <%- include('./include/adminNav')%>
 <center>
-    <br><strong><h3>Complaint About</h3></strong>
-    <div class="row mt-5">
-        <div class="col-md-6 m-auto">
-            <div class="card card-body">
+  <h1><i class="fa fa-balance-scale mt-1"></i></h3>
+    <div class="container">
+    <div class="row mt-2">
+        <div class="col-md-6 card pt-1">
+          <strong><h3>Complaint About</h3></strong>
+            <div class="card-body">
                 <% if (!ret2[0].profilePicture) { %>
-                    <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                    <img src="/default.jpg" alt="" width="200" height="200" class="img-thumbnail rounded-circle mb-3">
                 <% } else { %>
                     <% if (ret2[0].profilePicture.match(/userPic/g)) { %>
-                        <img src="/<%= result[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                        <img src="/<%= ret2[0].profilePicture %>" alt="" width="200" height="200" class="border p-1 rounded-circle mb-3">
                     <% } else {%>
-                        <img src="<%= result[i].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                        <img src="<%= ret2[0].profilePicture %>" alt="" width="200" height="200" class="img-thumbnail rounded-circle mb-3">
                     <% } %>
                 <% } %>
-                <p>User Name: <strong><%= ret2[0].userName %></strong></p>
-                <p>First Name: <strong><%= ret2[0].firstName %></strong></p>
-                <p>Last Name: <strong><%= ret2[0].lastName %></strong></p>
+                <p>Username: <strong><%= ret2[0].username %></strong></p>
+                <p>First name: <strong><%= ret2[0].firstname %></strong></p>
+                <p>Last name: <strong><%= ret2[0].lastname %></strong></p>
+                <p>
+                  Account status: <strong>
+                  <%if (ret2[0].suspended == 1) {%>
+                    suspended
+                  <%} else {%>
+                    active
+                  <% } %>
+                  </strong>
+                </p>
                 <div class="d-flex flex-row justify-content-center">
                     <div class="p-3">
-                        <a href="/suspendAcc/<%- ret2[0]._id %>">
+                        <a href="/suspendAcc/<%- ret2[0].id %>">
                             <i data-toggle="tooltip" data-placement="top" title="Suspend Account" class="fa fa-balance-scale"></i>
                         </a>
                     </div>
                     <div class="p-3">
-                        <a href="/deleteAcc2/<%- o._id %>">
-                            <i data-toggle="tooltip" data-placement="top" title="Delete Account" class="fa fa-ban"></i>
+                        <a href="/processReq/<%- result[0].id %>">
+                            <i data-toggle="tooltip" data-placement="top" title="Process request" class="fa fa-tasks"></i>
                         </a>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <br><strong><h3>Requester</h3></strong>
-    <div class="row mt-5">
-        <div class="col-md-6 m-auto">
-            <div class="card card-body">
+
+        <div class="col-md-6 card pt-1">
+          <strong><h3>Complainant</h3></strong>
+            <div class=" card-body">
                 <% if (!ret1[0].profilePicture) { %>
-                    <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                    <img src="/default.jpg" alt="" width="200" height="200" class="img-thumbnail rounded-circle mb-3">
                 <% } else { %>
                     <% if (ret1[0].profilePicture.match(/userPic/g)) { %>
-                        <img src="/<%= ret1[0].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                        <img src="/<%= ret1[0].profilePicture %>" alt="" width="200" height="200" class="border p-1 rounded-circle mb-3">
                     <% } else {%>
-                        <img src="<%= ret1[0].profilePicture %>" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                        <img src="<%= ret1[0].profilePicture %>" alt="" width="200" height="200" class="img-thumbnail rounded-circle mb-3">
                     <% } %>
                 <% } %>
-                <p>User Name: <strong><%= ret1[0].userName %></strong></p>
-                <p>First Name: <strong><%= ret1[0].firstName %></strong></p>
-                <p>Last Name: <strong><%= ret1[0].lastName %></strong></p>
+                <p>Username: <strong><%= ret1[0].username %></strong></p>
+                <p>First name: <strong><%= ret1[0].firstname %></strong></p>
+                <p>Last name: <strong><%= ret1[0].lastname %></strong></p>
+                <p>
+                  Account status:
+                  <strong>
+                  <%if (ret1[0].suspended == 1) {%>
+                     suspended
+                  <%} else {%>
+                    active
+                  <% } %>
+                  </strong>
+                </p>
             </div>
         </div>
     </div>
+  </div>
 </center>
 <%- include ('./include/footer')%>

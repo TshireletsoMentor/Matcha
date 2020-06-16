@@ -40,18 +40,25 @@ router.get('/', (req, res) => {
             })
         })
       } else {
-        const sql4 = "SELECT COUNT(*) AS count FROM users WHERE online = 'Y'";
-        connection.query(sql4, (err, count) => {
-          if (err) throw err;
-          const sql5 = "SELECT * FROM users WHERE username != 'admin' AND online = 'Y' AND suspended != 1 LIMIT ?, ?";
-          connection.query(sql5, [
-            (perPage * page) - perPage,
-            perPage,
-          ], (err, ret) => {
+        const sql3 = "SELECT * FROM users WHERE username = ?";
+        connection.query(sql3, [
+          session.username
+          ], (err, result) => {
             if (err) throw err;
-            res.render('dashboard', { result, ret, current: page, pages: Math.ceil(count[0].count / perPage), count: count[0].count })
-          })
-        })
+
+            const sql4 = "SELECT COUNT(*) AS count FROM users WHERE online = 'Y'";
+            connection.query(sql4, (err, count) => {
+              if (err) throw err;
+              const sql5 = "SELECT * FROM users WHERE username != 'admin' AND online = 'Y' AND suspended != 1 LIMIT ?, ?";
+              connection.query(sql5, [
+                (perPage * page) - perPage,
+                perPage,
+              ], (err, ret) => {
+                if (err) throw err;
+                res.render('dashboard', { result, ret, current: page, pages: Math.ceil(count[0].count / perPage), count: count[0].count })
+              })
+            })
+        });
       }
     }
       // let errors = [];
@@ -145,10 +152,14 @@ router.post('/', (req, res) => {
                         Username
                         ], (err, result) => {
                           if (err) throw err;
-                          const sql4 = "SELECT COUNT(*) AS count FROM users WHERE username NOT IN (?, ?) AND suspended != 1";
+                          const sql4 = `SELECT COUNT(*) AS count FROM users WHERE 
+                          username NOT IN (?, ?) AND
+                          username NOT IN (SELECT blocked FROM blocked WHERE username = ?) AND 
+                          suspended != 1`;
                           connection.query(sql4, [
                             'admin',
-                            session.username,                            
+                            session.username,
+                            session.username                            
                           ], (err, count) => {
                             if (err) throw err;
                             const sql5 = "SELECT * FROM users WHERE username NOT IN (?, ?) AND suspended != 1 ORDER BY RAND() LIMIT ?, ?";
