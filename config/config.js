@@ -27,7 +27,7 @@ connection.query(`CREATE TABLE IF NOT EXISTS users
   viewToken VARCHAR(255) NOT NULL,
   verified VARCHAR(1) DEFAULT \'N\',
   gender VARCHAR(15),
-  sexualOrientation VARCHAR(25) DEFAULT \'Bisexual\',
+  sexualOrientation VARCHAR(25) DEFAULT \'Bi\',
   dateOfBirth DATE,
   age INT,
   bio VARCHAR(10000),

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const connection = require('../config/connect');
+const { session } = require('passport');
 
 //Logout page
 router.get('/', (req, res) => {
@@ -21,6 +22,7 @@ router.get('/', (req, res) => {
         session.firstName = "";
         session.objId = "";
         session.extProfComp = "";
+        session.query = "";
         req.session.destroy();
         console.log("User logged out");
         console.log(session);

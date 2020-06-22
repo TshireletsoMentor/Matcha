@@ -1,0 +1,122 @@
+<% if (session.suspended == 1) { %>
+  <%- include ('./include/nav')%>
+  
+  <div class="ml-3">
+      <h1 class="mt-4">Search</h1>
+      <p class="lead m3-3">Welcome <%= session.username%></p>
+      <p>Following a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
+  </div>
+  <% } %>
+  
+  <% if (session.username != "admin" && session.suspended != 1) { %>
+  <%- include ('./include/nav')%>
+  <div class="ml-3">
+    <h1 class="mt-4">Search</h1>
+    <p class="lead m3-3">Welcome <%= session.username%></p>
+  </div>
+  
+  <div class="d-sm-flex flex-row flex-wrap">
+  <% for (let i = 0; i < ret.length; i++) { %>
+      <% if((ret[i].id != session.objId || ret[i].extProfComp != 1) && ret[i].username != 'admin' && ret[i].suspended != 1 ){%>
+      <div class="col-lg-3 col-md-6 mb-3">
+              <div class="card h-100">
+                  <div class="card-body text-center">
+                    <% if (session.extProfComp != 1) { %>
+                        <% if (!ret[i].profilePicture) { %>
+                            <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                        <% } else { %>
+                          <% if (ret[i].profilePicture.match(/userPic/g)) { %>
+                            <img src="/<%= ret[i].profilePicture %>" alt="" width="150" height="150" class="border p-1 rounded-circle mb-3" style="filter: blur(8px);">
+                          <% } else { %>
+                            <img src="<%= ret[i].profilePicture %>" alt="" width="150" height="150" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                          <% } %>
+                      <% } %>
+                    <% } %>
+                    <% if (session.extProfComp == 1) { %>
+                        <% if (!ret[i].profilePicture) { %>
+                            <img src="/default.jpg" alt="" width="150" height="150" class="img-thumbnail rounded-circle mb-3">
+                        <% } else { %>
+                          <% if (ret[i].profilePicture.match(/userPic/g)) { %>
+                            <img src="/<%= ret[i].profilePicture %>" alt="" width="150" height="150"  class="border p-1 mb-3 rounded-circle">
+                          <% } else { %>
+                            <img src="<%= ret[i].profilePicture %>" alt="" width="150" height="150" height="150" class="img-thumbnail mb-3 rounded-circle">
+                          <% } %>
+                        <% } %>
+                    <% } %>
+                    <div>
+                      <% if (ret[i].online == 'Y') { %> 
+                          <h3><i data-toggle="tooltip" data-placement="top" title="ONLINE"> &#x1F49A</i> <%= ret[i].firstname %> <%= ret[i].age %></h3>
+                      <% } else { %>
+                          <h3><i data-toggle="tooltip" data-placement="top" title="LAST SEEN: <%- ret[i].lastOn%>">&#x1F494</i> <%= ret[i].firstname %> <%= ret[i].age %></h3>
+                      <% } %>
+                    </div>
+                      <strong><h5><%- ret[i].city%></h5></strong>
+                      <%  if(ret[i].bio.length > 75){%>
+                              <p><%= ret[i].bio.substring(0, 75) + "..."; %></p>
+                      <%  }else{ %>
+                              <p><%= ret[i].bio; %></p>
+                      <%  } %>
+                  </div> 
+                  <div class="card-footer">
+                    <div class="d-sm-flex flex-row justify-content-center">
+                        <div class="p-2">
+                            <a href="/like/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
+                                <i class="fa fa-heart" ></i>
+                            </a>
+                        </div>
+                        <div class="p-2">
+                            <a href="/viewProf/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
+                                <i class="fa fa-eye"></i>
+                            </a>
+                        </div>
+                        <div class="p-2">
+                            <a href="/report/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Report">
+                                <i class="fa fa-exclamation-triangle"></i>
+                            </a>
+                        </div>
+                        <div class="p-2">
+                            <i class="fa fa-star" data-toggle="tooltip" data-placement="top" title="Popularity"> <%= ret[i].popularity %></i>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+          <br>
+          <% } %>
+      <% } %>
+      </div>
+      <div >
+      <% if (pages > 0) { %>
+        <ul class="pagination justify-content-center">
+          <% if (current == 1) { %>
+              <li class="disabled page-item"><a class="page-link" href="">First</a></li>
+          <% } else { %>
+              <li class="page-item"><a class="page-link" href="/search/1">First</a></li>
+          <% } %>
+          <% let i = (Number(current) > 5 ? Number(current) - 4 : 1) %>
+          <% if (i !== 1) { %>
+              <li class="disabled page-item"><a class="page-link" href="">...</a></li>
+          <% } %>
+          <% for (; i <= (Number(current) + 4) && i <= pages; i++) { %>
+              <% if (i == current) { %>
+                  <li class="active page-item" aria-current="page"><span class="page-link"><%= i %><span class="sr-only">(current)</span></span></li>
+              <% } else { %>
+                  <li class="page-item"><a class="page-link" href="/search/<%- i %>"><%= i %></a></li>
+              <% } %>
+              <% if (i == Number(current) + 4 && i < pages) { %>
+                  <li class="disabled page-item"><a class="page-link" href="">...</a></li>
+              <% } %>
+          <% } %>
+          <% if (current == pages) { %>
+              <li class="disabled page-item"><a class="page-link" href="">Last</a></li>
+          <% } else { %>
+              <li class="page-item"><a class="page-link" href="/search/<%- pages %>">Last</a></li>
+          <% } %>
+      </ul>
+      <% } %>
+    </div>
+  </div>
+  <% } %>
+  
+  
+  <%- include ('./include/footer')%>
