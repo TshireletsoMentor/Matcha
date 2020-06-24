@@ -23,7 +23,7 @@
                   <form name="search" action="/search" method="post" >
                       <h5>Age</h5>
                       <div class="form-control-inline">
-                          <div class="row mt-2">
+                          <div class="row m-1">
                               <div class="col-sm-10">
                                   <div class="checkbox">
                                       <label><input name="age" type="checkbox" value="25">[18-25]</label>&nbsp;
@@ -38,8 +38,8 @@
                       <hr>
                       <h5>Tags</h5>
                       <div class="form-control-inline">
-                          <div class="row mt-2">
-                              <div class="col-sm-3">
+                          <div class="form-inline">
+                              <div class="form-group m-2">
                                   <select name="interest1">
                                           <option value="Unchanged">Unchanged</option>
                                           <option value="#Traveling">#Traveling</option>
@@ -47,7 +47,7 @@
                                           <option value="#Exercise">#Exercise</option>
                                   </select>
                               </div>
-                              <div class="col-sm-3">
+                              <div class="form-group m-2">
                                   <select name="interest2">
                                           <option value="Unchanged">Unchanged</option>
                                           <option value="#Outdoors">#Outdoors</option>
@@ -55,15 +55,15 @@
                                           <option value="#Cooking">#Cooking</option>
                                   </select>
                               </div>
-                              <div class="col-sm-3">
+                              <div class="form-group m-2">
                                   <select name="interest3">
                                           <option value="Unchanged">Unchanged</option>
                                           <option value="#Photography">#Photography</option>
                                           <option value="#Sports">#Sports</option>
                                           <option value="#Pets">#Pets</option>
                                   </select>
-                          </div>
-                              <div class="col-sm-3">
+                              </div>
+                              <div class="form-group m-2">
                                   <select name="interest4">
                                           <option value="Unchanged">Unchanged</option>
                                           <option value="#Art">#Art</option>
@@ -75,37 +75,37 @@
                       </div>
                       <hr>
                       <h5>Location</h5>
-                          <div class="slidecontainer">
+                          <div class="slidecontainer m-2">
                               <label for="customRange">Distance from me</label><br>
                           <input name="location" type="range" class="custom-range" min="1" max="100" id="customRange1" value="100">
                               <p>Within: <span id="distance"></span> kilometers</p>
                           </div>
                       <hr>
                       <h5>Popularity</h5>
-                      <div class="slidecontainer">
+                      <div class="slidecontainer m-2">
                           <input name="popularity" type="range" class="custom-range" min="0" max="10" id="customRange2" value="0">
                               <p>Rating <span id="popularity"></span> <i class="fa fa-star"></i></p>
                           </div>
                       <hr>
                       <h5>Filter by: </h5>
-                      <div class="forom-control-inline ml-4">
-                          <div class="row mt-2">
-                              <div class="col-sm-2">
+                      <div class="form-check form-check-inline">
+                          <div class="d-sm-flex flex-row justify-content-center">
+                              <div class="p-2">
                                   <label class="form-check-label">
                                       <input type="radio" name="filter" value="age" class="form-check-input">Age
                                   </label>
                               </div>
-                              <div class="col-sm-2">
+                              <div class="p-2">
                                   <label class="form-check-label">
                                       <input type="radio" name="filter" value="tags" class="form-check-input">Tags
                                   </label>
                               </div>
-                              <div class="col-sm-2">
+                              <div class="p-2">
                                   <label class="form-check-label">
                                       <input type="radio" name="filter" value="location" class="form-check-input">Location
                                   </label>
                               </div>
-                              <div class="col-sm-2">
+                              <div class="p-2">
                                   <label class="form-check-label">
                                       <input type="radio" name="filter" value="popularity" class="form-check-input">Popularity
                                   </label>
@@ -182,7 +182,7 @@
                           <div class="card-footer">
                             <div class="d-sm-flex flex-row justify-content-center">
                                 <div class="p-2">
-                                    <a href="/like/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
+                                    <a href="/like4/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
                                         <i class="fa fa-heart" ></i>
                                     </a>
                                 </div>
