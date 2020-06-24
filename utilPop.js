@@ -22,6 +22,15 @@ module.exports = {
           ], (err, response) => {
             if (err) throw err;
           })
+        }
+        else if(result[0].popularity <= 0){
+          const sql4 = "UPDATE users SET popularity = ? WHERE username = ?";
+          connection.query(sql4, [
+            '1',
+            username
+          ], (err, response) => {
+            if (err) throw err;
+          })
         } else {
           const sql4 = "UPDATE users SET popularity = ? WHERE username = ?";
           connection.query(sql4, [

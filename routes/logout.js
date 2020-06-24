@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const connection = require('../config/connect');
-const { session } = require('passport');
 
 //Logout page
 router.get('/', (req, res) => {

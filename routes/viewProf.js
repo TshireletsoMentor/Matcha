@@ -63,14 +63,14 @@ router.get('/:viewToken', (req, res) => {
       const sql1 = "SELECT * FROM users WHERE viewToken = ?";
       connection.query(sql1, [
         viewToken
-      ], (err, result) => {
+      ], (err, ret) => {
         if (err) throw err;
-        // console.log(result[0].username)
-        if (result[0].username != session.username && session.username != 'admin') {
+        // console.log(ret[0].username)
+        if (ret[0].username != session.username && session.username != 'admin') {
           const sql2 = "SELECT * FROM profileviews WHERE username = ? AND viewed = ?";
           connection.query(sql2, [
             session.username,
-            result[0].username
+            ret[0].username
           ], (err, visited) => {
             if (err) throw err;
 
@@ -78,16 +78,17 @@ router.get('/:viewToken', (req, res) => {
               const sql3 = "INSERT INTO profileviews (username, viewed) VALUES (?, ?)";
               connection.query(sql3, [
                 session.username,
-                result[0].username
+                ret[0].username
               ], (err, response) => {
                 if (err) throw err;
 
-                utilPop.popularity(result[0].username);
+                utilPop.popularity(ret[0].username);
               })
             }
           })
         }
 
+        // setTimeout(())
         const sql5 = "SELECT * FROM users WHERE viewToken = ?";
           connection.query(sql5, [
             viewToken

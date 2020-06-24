@@ -5,7 +5,6 @@ const connection = require('../config/connect');
 const uniqid = require('uniqid');
 const functions = require('../functions');
 const geolib = require('geolib');
-const { session } = require('passport');
 
 //login page
 
@@ -72,7 +71,7 @@ router.get('/', (req, res) => {
                   ret2.splice(i, 1);
             }
             for (let i = 0; i < ret2.length; i++) {
-              if (ret2[i].suspended != 0 || ret2[i].extProfComp == 0 || ret2[i].username == Username){
+              if (ret2[i].suspended != 0 || ret2[i].extProfComp == 0 || ret2[i].username == session.username){
                 ret2.splice(i, 1);                             
               }
             }
