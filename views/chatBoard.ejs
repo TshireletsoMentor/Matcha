@@ -6,19 +6,21 @@
 <% if (session.suspended != 1) { %> 
   <% if(session.extProfComp != 1) { %>
     <center>
-      <div class="card m-3">
+      <div class="m-3">
         <strong><p>Please complete your extended profile to enjoy the site's full features</p></strong>
         <a href="/updateProfile">Update Profile</a>
       </div> 
     </center>
   <% } else { %>
     <div class="container mt-2">
-      <h1 class="mt-4"><i class="fa fa-heart"></i> My Matches</h1><br>
+      <h1 class="mt-4"><i class="far fa-comments-o"></i> My Chats</h1><br>
       <%- include ('./partials/messages') %>
       <div class="d-sm-flex flex-row flex-wrap">
           <% for (let i = 0; i < result.length; i++) { %>
             <div class="col-lg-3 col-md-6 mb-3">
                 <div class="card h-100">
+                  <a href="/chat/<%- result[i].viewToken%>">
+                    <i data-toggle="tooltip" data-placement="top" title="Chat" class="focus">
                     <div class="card-body text-center">
                     <% if (session.extProfComp != 1) { %>
                       <% if (!result[i].profilePicture) { %>
@@ -42,53 +44,38 @@
                         <% } %>
                       <% } %>
                     <% } %>
-                    <div>
+                      <div>
                         <% if (result[i].online == 'Y') { %> 
                             <h3><i data-toggle="tooltip" data-placement="top" title="Online">&#x1F49A</i> <%= result[i].firstname %> <%= result[i].age %></h3>
                         <% } else { %>
                             <h3><i data-toggle="tooltip" data-placement="top" title="last seen <%- result[i].lastOn%>">&#x1F494</i> <%= result[i].firstname %> <%= result[i].age %></h3>
                         <% } %>
+                      </div>
                     </div>
-                    <strong><h5><%- result[i].city%></h5></strong>
-                    <% if (result[i].bio.length > 75) { %>
-                        <p><%= result[i].bio.substring(0,75) %>...</p>
-                    <% }else { %>
-                        <p><%= result[i].bio.substring(0,75) %></p>
-                    <% } %>
-                    </div>
+                    </i>
+                  </a>
                     <div class="card-footer">
                       <div class="d-flex flex-row justify-content-center">
-                        <div class="p-1">
-                            <a href="/like3/<%- result[i].viewToken %>">
-                                <i data-toggle="tooltip" data-placement="top" title="Dislike" class="fa fa-heart" style="color:black"></i>
-                            </a>
-                        </div>
-                        <div class="p-1">
-                            <a href="/viewProf/<%- result[i].viewToken%>">
-                                <i data-toggle="tooltip" data-placement="top" title="View Profile" class="fa fa-eye" ></i>
-                            </a>
-                        </div>
-                        <div class="p-1">
-                          <a href="/chat/<%- result[i].viewToken%>">
-                              <i data-toggle="tooltip" data-placement="top" title="Chat" class="fa fa-comments-o"></i>
+                        <div class="p-2">
+                          <a href="/chat/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
+                              <i class="fa fa-comments-o"></i>
                           </a>
                         </div>
-                        <div class="p-1">
-                          <a href="/block/<%- result[i].viewToken%>" onclick="return confirm('Are you sure, blocking is permanent?')">
-                            <i data-toggle="tooltip" data-placement="top" title="Block" class="fa fa-window-close"></i>
-                          </a> 
+                        <div class="p-2">
+                            <a href="/viewProf/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
+                                <i class="fa fa-eye"></i>
+                            </a>
                         </div>
-                        <div class="p-1">
-                          <a href="/report/<%- result[i].viewToken%>">
-                              <i data-toggle="tooltip" data-placement="top" title="Report Account" class="fa fa-exclamation-triangle"></i>
-                          </a>
+                        <div class="p-2">
+                            <a href="/report/<%- result[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Report">
+                                <i class="fa fa-exclamation-triangle"></i>
+                            </a>
                         </div>
-                        <div class="pt-1">
-                            <i data-toggle="tooltip" data-placement="top" title="Popularity" class="fa fa-star" > <%= result[i].popularity %> </i>
+                        <div class="p-2">
+                            <i class="fa fa-star" data-toggle="tooltip" data-placement="top" title="Popularity"> <%= result[i].popularity %> </i>
                         </div>
+                      </div>
                     </div>
-                    </div>
-                  
                 </div>
             </div>
             <br>

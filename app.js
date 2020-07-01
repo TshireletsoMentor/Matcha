@@ -6,8 +6,13 @@ const session = require('express-session');
 const MySQLStore = require('express-mysql-session')(session);
 require('dotenv').config();
 const path = require('path');
+const http = require('http');
+const socketio = require('socket.io');
 
 const app = express();
+const server = http.createServer(app);
+const io = socketio(server);
+
 
 //EJS
 app.use(expressLayouts);
@@ -37,6 +42,7 @@ app.use('/', require('./routes/index'));
 app.use('/block', require('./routes/block'));
 app.use('/blockReq', require('./routes/blockReq'));
 app.use('/contact', require('./routes/contact'));
+app.use('/chat', require('./routes/chat'));
 app.use('/home', require('./routes/home'));
 app.use('/deleteAcc', require('./routes/deleteAcc'));
 app.use('/deleteAcc2', require('./routes/deleteAcc2'));
@@ -84,7 +90,22 @@ app.use((req, res, next) => {
     res.status(404).render('404');
 });
 
+// Run when client connects
+io.on('connection', socket => {
+  //console.log('New socket connection...', socket.id);
+  socket.on('chat', data => {
+    console.log("Chat says: ", data); 
+    //io.sockets.emit('chat', data);
+  });
+
+  socket.on("new_message", data => {
+    console.log("Client says", data);
+
+    io.emit("new_message", "Yes client ?")
+  })
+});
+
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
+server.listen(PORT, console.log(`Server started on port ${PORT}`));

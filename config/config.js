@@ -70,7 +70,7 @@ connection.query(`CREATE TABLE IF NOT EXISTS profileviews
 ( id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, 
   username VARCHAR(100) NOT NULL, 
   viewed VARCHAR(100) NOT NULL,
-  date DATETIME,
+  date DATETIME
 )`);
 console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"profileViews\" CREATED');
 
@@ -84,6 +84,14 @@ connection.query(`CREATE TABLE IF NOT EXISTS reports
 )`);
 console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"reports\" CREATED');
 
+connection.query(`CREATE TABLE IF NOT EXISTS chats
+( id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, 
+  sender VARCHAR(100) NOT NULL,
+  receiver VARCHAR(100) NOT NULL,
+  message VARCHAR(10000) NOT NULL, 
+  date DATETIME 
+)`);
+console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"chats\" CREATED');
 
 // notifications
 // chats
