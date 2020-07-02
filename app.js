@@ -8,6 +8,8 @@ require('dotenv').config();
 const path = require('path');
 const http = require('http');
 const socketio = require('socket.io');
+const moment = require('moment');
+const {formatMessage, findRoom} = require('./utilSocket');
 
 const app = express();
 const server = http.createServer(app);
@@ -90,19 +92,41 @@ app.use((req, res, next) => {
     res.status(404).render('404');
 });
 
+var rooms = [];
 // Run when client connects
 io.on('connection', socket => {
   //console.log('New socket connection...', socket.id);
-  socket.on('chat', data => {
-    console.log("Chat says: ", data); 
-    //io.sockets.emit('chat', data);
+  //console.log(socket.adapter.rooms);
+  socket.on('joinRoom', ({sender1, receiver1}) => {
+    var index = findRoom(sender1, receiver1, rooms)
+      //console.log(index);
+      if(index !== -1){
+        socket.join(rooms[index])
+      } else {
+        let roomName = sender1 + receiver1;
+        rooms.push(roomName)
+        socket.join(roomName)
+      }
   });
 
-  socket.on("new_message", data => {
-    console.log("Client says", data);
-
-    io.emit("new_message", "Yes client ?")
+  socket.on('chatMessage', ({sender, receiver, message}) => {
+    const sql = "INSERT INTO chats (sender, receiver, message, date) VALUES (?, ?, ?, ?)";
+    connection.query(sql, [
+      sender,
+      receiver,
+      message,
+      moment().format('MMMM Do, h:mm a')
+    ], (err) => {
+      if (err) throw err
+    })
+    
+    var index = findRoom(sender, receiver, rooms)
+    //console.log(index);
+    if(index !== -1){
+      io.to(rooms[index]).emit('message', formatMessage(sender, receiver, message))
+    }
   })
+
 });
 
 

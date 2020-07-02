@@ -89,7 +89,7 @@ connection.query(`CREATE TABLE IF NOT EXISTS chats
   sender VARCHAR(100) NOT NULL,
   receiver VARCHAR(100) NOT NULL,
   message VARCHAR(10000) NOT NULL, 
-  date DATETIME 
+  date VARCHAR(100) 
 )`);
 console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"chats\" CREATED');
 

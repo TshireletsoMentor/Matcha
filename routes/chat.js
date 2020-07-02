@@ -41,6 +41,7 @@ router.get('/:viewToken', (req, res) => {
       viewToken
     ], (err, ret) => {
       if (err) throw err;
+      //console.log(ret)
 
       if(ret.length == 1){
         if (ret[0].username != session.username && session.username != 'admin') {
@@ -50,15 +51,17 @@ router.get('/:viewToken', (req, res) => {
             ret[0].username
           ], (err, liked) => {
             if (err) throw err;
-
+            
             if(liked.length == 1){
-              const sql3 = "SELECT * FROM chats WHERE sender = ? and receiver = ?";
+              const sql3 = "SELECT * FROM chats WHERE sender = ? AND receiver = ? OR sender = ? AND receiver = ?";
               connection.query(sql3, [
                 session.username,
-                ret[0].username
+                ret[0].username,
+                ret[0].username,
+                session.username
               ], (err, result) => {
                 if (err) throw err;
-
+                
                   res.render('chat', {ret, result})
               });
             }
