@@ -25,7 +25,7 @@
               <div id="chatMessage">
                 <% for(let i = 0; i < result.length; i++) {%>
                 <div class="alert alert-secondary">
-                  <p ><strong><%= result[i].sender %></strong> <span><%= result[i].date %></span></p>
+                  <p ><strong><%= result[i].sender %></strong> <small><span><%= result[i].date %></span></small></p>
                   <p >
                     <%= result[i].message %>
                   </p>
@@ -48,5 +48,8 @@
         </div>
     </div>
 </div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socket.js"></script>
+
 
 <%- include ('./include/footer') %>

@@ -9,7 +9,7 @@ const path = require('path');
 const http = require('http');
 const socketio = require('socket.io');
 const moment = require('moment');
-const {formatMessage, findRoom} = require('./utilSocket');
+const {formatMessage, findRoom, findUser} = require('./utilSocket');
 
 const app = express();
 const server = http.createServer(app);
@@ -93,10 +93,25 @@ app.use((req, res, next) => {
 });
 
 var rooms = [];
+var users = [];
 // Run when client connects
 io.on('connection', socket => {
-  //console.log('New socket connection...', socket.id);
-  //console.log(socket.adapter.rooms);
+  socket.on('userJoin', ({id, session}) => {
+    //console.log(users)
+    var index = findUser(session, users);
+    //console.log(index);
+    if (index !== -1){
+      users[index].id = id;
+    } else {
+      users.push({
+        id: id,
+        username: session
+      })
+    }
+    //console.log(users)
+  })
+
+
   socket.on('joinRoom', ({sender1, receiver1}) => {
     var index = findRoom(sender1, receiver1, rooms)
       //console.log(index);
@@ -115,7 +130,7 @@ io.on('connection', socket => {
       sender,
       receiver,
       message,
-      moment().format('MMMM Do, h:mm a')
+      moment().format('MMM D, h:mm a')
     ], (err) => {
       if (err) throw err
     })
@@ -125,7 +140,57 @@ io.on('connection', socket => {
     if(index !== -1){
       io.to(rooms[index]).emit('message', formatMessage(sender, receiver, message))
     }
+  });
+
+  socket.on('like', ({session, viewToken }) => {
+    //console.log(`id = ${id}, session = ${session}, viewtoken = ${viewToken}`)
+    const sql = "SELECT username FROM users WHERE viewToken = ?";
+    connection.query(sql, [
+      viewToken
+    ], (err, ret) => {
+      if (err) throw err;
+      //console.log(ret[0].username)
+      if(ret.length == 1){
+        var index = findUser(ret[0].username.toLowerCase(), users);
+        const sql1 = "SELECT * FROM likes WHERE username = ? AND liked = ?"
+        connection.query(sql1, [
+          session,
+          ret[0].username
+        ], (err, result) => {
+          if (err) throw err;
+
+          if(result.length == 0){
+            io.to(users[index].id).emit('notification', `${session} just liked you.`)
+          }
+        })
+      }
+    })
   })
+
+  socket.on('like1', ({session4, viewToken4 }) => {
+    const sql2 = "SELECT username FROM users WHERE viewToken = ?";
+    connection.query(sql2, [
+      viewToken4
+    ], (err, ret) => {
+      if (err) throw err;
+      //console.log(ret[0].username)
+      if(ret.length == 1){
+        var index = findUser(ret[0].username.toLowerCase(), users);
+        const sql3 = "SELECT * FROM likes WHERE username = ? AND liked = ?"
+        connection.query(sql3, [
+          session4,
+          ret[0].username
+        ], (err, result) => {
+          if (err) throw err;
+
+          if(result.length == 0){
+            io.to(users[index].id).emit('notification', `${session4} just liked you.`)
+          }
+        })
+      }
+    })
+  })
+
 
 });
 

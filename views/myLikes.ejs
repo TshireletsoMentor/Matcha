@@ -13,6 +13,7 @@
     </center>
   <% } else { %>
     <div class="container mt-2">
+      <p id="session2" hidden><%- session.username %></p>
       <h1 class="mt-4"><i class="far fa-heart"></i> My likes</h1><br>
       <%- include ('./partials/messages') %>
       <div class="d-sm-flex flex-row flex-wrap">
@@ -59,7 +60,7 @@
                     <div class="card-footer">
                       <div class="d-flex flex-row justify-content-center">
                           <div class="p-2">
-                              <a href="/like2/<%- result[i].viewToken %>"  >
+                              <a id="dislike1" href="/like2/<%- result[i].viewToken %>"  >
                                   <i data-toggle="tooltip" data-placement="top" title="Dislike" class="fa fa-heart" style="color:black"></i>
                               </a>
                           </div>

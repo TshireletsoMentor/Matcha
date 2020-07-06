@@ -5,7 +5,7 @@ function formatMessage(sender, receiver, message){
     sender,
     receiver,
     message,
-    date: moment().format('MMMM Do, h:mm a')
+    date: moment().format('MMM D, h:mm a')
   }
 }
 
@@ -13,7 +13,13 @@ function findRoom(sender, receiver, rooms){
   return rooms.findIndex(room => room.match(sender) && room.match(receiver))
 }
 
+function findUser(username, users){
+  return users.findIndex(user => user == username)
+}
+
+
 module.exports = {
   findRoom,
-  formatMessage
+  formatMessage,
+  findUser
 }

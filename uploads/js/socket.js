@@ -5,6 +5,11 @@ const chatBox = document.getElementById('chatBox');
 const sender1 = document.getElementById('sender1').textContent.toLowerCase();
 const receiver1 = document.getElementById('receiver1').textContent.toLowerCase();;
 
+socket.on('connect', function() {
+  //console.log(socket.id);
+  chatBox.scrollTop = chatBox.scrollHeight;
+});
+
 socket.emit('joinRoom', {sender1, receiver1});
 
 socket.on('message', message => {
@@ -43,7 +48,7 @@ function outputMessage(message){
   const div = document.createElement('div');
   div.classList.add("alert");
   div.classList.add("alert-secondary");
-  div.innerHTML = `<p><strong>${message.sender}</strong> <span>${message.date}</span></p>
+  div.innerHTML = `<p><strong>${message.sender}</strong> <small><span>${message.date}</span></small></p>
   <p >
     ${txt}
   </p>`;

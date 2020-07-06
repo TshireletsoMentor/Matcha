@@ -18,6 +18,7 @@
       </style>
       <div class="container">
               <div class="card card-body mt-4">
+                <p id="session4" hidden><%- session.username %></p>
                   <h3><i class="fas fa-search"></i> Search</h3>
                   <hr>
                   <form name="search" action="/search" method="post" >
@@ -182,7 +183,7 @@
                           <div class="card-footer">
                             <div class="d-sm-flex flex-row justify-content-center">
                                 <div class="p-2">
-                                    <a href="/like4/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
+                                    <a id="like4" href="/like4/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
                                         <i class="fa fa-heart" ></i>
                                     </a>
                                 </div>
@@ -240,5 +241,7 @@
           </div>
           <% } %>
       <% } %>
-  <% } %>    
+  <% } %>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/socketEvents.js"></script>  
 <%- include ('./include/footer')%>

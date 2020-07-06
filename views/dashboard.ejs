@@ -12,7 +12,7 @@
 <%- include ('./include/nav')%>
 <div class="ml-3">
   <h1 class="mt-4">Home</h1>
-  <p class="lead m3-3">Welcome <%= session.username%></p>
+  <p id="session" class="lead m3-3">Welcome <%= session.username%></p>
 </div>
 
 <div class="d-sm-flex flex-row flex-wrap">
@@ -60,8 +60,8 @@
                 <div class="card-footer">
                   <div class="d-sm-flex flex-row justify-content-center">
                       <div class="p-2">
-                          <a href="/like/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
-                              <i class="fa fa-heart" ></i>
+                          <a id="like" href="/like/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
+                              <i  class="fa fa-heart" ></i>
                           </a>
                       </div>
                       <div class="p-2">
@@ -204,5 +204,7 @@
     </div>
   </div>
   <% } %>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/socketEvents.js"></script>
 
 <%- include ('./include/footer')%>
