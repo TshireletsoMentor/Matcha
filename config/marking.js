@@ -1,7 +1,8 @@
 const connection = require('./connect');
-const faker = require('faker')
-const bcrypt = require('bcrypt')
+const faker = require('faker');
+const bcrypt = require('bcrypt');
 const uniqid = require('uniqid');
+const moment = require('moment');
 
 function age(dateOfBirth){
   var year = dateOfBirth.getFullYear();
@@ -50,7 +51,7 @@ var userArrayObject1 = [
   -26.205071, 
   28.040175,
   faker.random.number({'min':1, 'max':10}),
-  "vernon.jpg",
+  "userPic-vernon.jpg",
   "",
   "",
   "",
@@ -85,7 +86,7 @@ var userArrayObject2 = [
   -26.205370,
   28.046240, 
   faker.random.number({'min':1, 'max':10}),
-  "petunia.jpg",
+  "userPic-petunia.jpg",
   "",
   "",
   "",
@@ -120,7 +121,7 @@ var userArrayObject3 = [
   -26.289411,
   27.895595, 
   faker.random.number({'min':1, 'max':10}),
-  "arthur.jpg",
+  "userPic-arthur.jpg",
   "",
   "",
   "",
@@ -155,7 +156,7 @@ var userArrayObject4 = [
   -26.238743,
   28.013272, 
   faker.random.number({'min':1, 'max':10}),
-  "molly.jpg",
+  "userPic-molly.jpg",
   "",
   "",
   "",
@@ -190,9 +191,9 @@ var userArrayObject5 = [
   -26.246148, 
   27.872434, 
   faker.random.number({'min':1, 'max':10}),
-  "ron.jpg",
-  "ron1.jpg",
-  "ron2.jpg",
+  "userPic-ron.jpg",
+  "userPic-ron1.jpg",
+  "userPic-ron2.jpg",
   "",
   "",
   'Y',
@@ -225,8 +226,8 @@ var userArrayObject6 = [
   -26.246148, 
   27.872434, 
   faker.random.number({'min':1, 'max':10}),
-  "cho1.jpg",
-  "cho2.jpg",
+  "userPic-cho1.jpg",
+  "userPic-cho2.jpg",
   "",
   "",
   "",
@@ -260,8 +261,8 @@ var userArrayObject7 = [
   -26.246148, 
   27.872434, 
   faker.random.number({'min':1, 'max':10}),
-  "albus.jpg",
-  "albus1.jpg",
+  "userPic-albus.jpg",
+  "userPic-albus1.jpg",
   "",
   "",
   "",
@@ -295,7 +296,7 @@ var userArrayObject8 = [
   -23.318257, 
   30.719293, 
   faker.random.number({'min':1, 'max':10}),
-  "gellert1.jpg",
+  "userPic-gellert1.jpg",
   "",
   "",
   "",
@@ -330,7 +331,7 @@ var userArrayObject9 = [
   -25.740178, 
   28.211980, 
   faker.random.number({'min':1, 'max':10}),
-  "umbridge.jpg",
+  "userPic-umbridge.jpg",
   "",
   "",
   "",
@@ -365,7 +366,7 @@ var userArrayObject10 = [
   -26.199592, 
   28.046665, 
   faker.random.number({'min':1, 'max':10}),
-  "snape.gif",
+  "userPic-snape.gif",
   "",
   "",
   "",

@@ -147,10 +147,10 @@ router.post('/', (req, res) => {
           connection.query(sql5, [
             Email,
             Email
-          ], (err, result) => {
+          ], (err, ret) => {
             if (err) throw err
 
-            if(result.length > 0){
+            if(ret.length > 0){
               errors.push({msg: 'Email already in use, please use another'});
 
             }else{
@@ -160,7 +160,7 @@ router.post('/', (req, res) => {
               ], (err, result) => {
                 if (err) throw err;
 
-                if(result.length !== 0){
+                if(result.length == 1){
                   var firstName = result[0].firstname;
                   var Token = result[0].token;
 
@@ -168,10 +168,10 @@ router.post('/', (req, res) => {
                   connection.query(sql7, [
                     Email,
                     session.email
-                  ], (err, result) => {
+                  ], (err, response) => {
                     if(err) throw err;
                                         
-                    functons.sendNewMail(firstName, Email, Token);
+                    functions.sendNewMail(firstName, Email, Token);
                     success.push({msg: 'Email updated successfully, please verify your email'});
                   })
                 }else{
@@ -344,18 +344,21 @@ router.post('/', (req, res) => {
           //Update db for extended profile complete marker, if any of the properties in dbObj is empty, render 'incomplete profile'.
           //console.log(result[0]);
           if(result[0].username && result[0].firstname && result[0].lastname && result[0].email && result[0].password && result[0].gender && result[0].sexualOrientation && result[0].dateOfBirth && result[0].bio && result[0].interest1 && result[0].interest2 && result[0].interest3 && result[0].interest4){
-            if(result[0].city == "" && result[0].lat == "" && result[0].lng == ""){
+            //console.log("here");
+            if(result[0].city == null && result[0].lat == null && result[0].lng == null){
                   var URL = "https://www.ipapi.co/json";
                   request({
                     url: URL,
                     json: true,
                     }, (err, response, body) => {
+                      //console.log(body);
                         if(!err && response.statusCode == 200){
                           const sql18 = "UPDATE users SET city = ?, lat = ?, lng = ? WHERE email = ?";
                           connection.query(sql18, [
                             body.city,
                             body.latitude,
-                            body.longitude
+                            body.longitude,
+                            session.email
                           ], (err, result) => {
                             if(err) throw err;
 

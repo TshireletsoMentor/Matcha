@@ -1,14 +1,17 @@
 <%- include ('./include/nav')%>
+<%- include ('./include/notification')%>
 <center>
     <% if(result[0].extProfComp != 1){%>
-        <div class="card mt-3">
-            <strong><p>Please complete your extended profile to enjoy the site's full features</p></strong>
-            <a href="/updateProfile">Update Profile</a>
-        </div>
-        <br><br>
+      <center>
+        <div class="m-3">
+          <strong><p>Please complete your extended profile to enjoy the site's full features</p></strong>
+          <a href="/updateProfile">Update Profile</a>
+        </div> 
+      </center>
     <%}%>
     <% if(result[0].extProfComp == 1){%>
         <div class="row mt-5">
+          <p id="session" hidden><%- session.username %></p>
                 <div class="col-md-6 m-auto">
                     <div class="card card-body mt-4">
                         <h1><span class="far fa-id-badge"></span> Profile</h1>
@@ -60,4 +63,6 @@
         </div>
     <% } %>
 </center>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>
 <%- include ('./include/footer')%>

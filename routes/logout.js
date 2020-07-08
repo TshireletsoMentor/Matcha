@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const connection = require('../config/connect');
+const moment = require('moment');
 
 //Logout page
 router.get('/', (req, res) => {
@@ -11,7 +12,7 @@ router.get('/', (req, res) => {
       const sql = "UPDATE users SET online = ?, lastOn = ? WHERE email = ?";
       connection.query(sql, [
         'N',
-        new Date(),
+        moment().format('MMM D YYYY, h:mm:ss'),
         session.email
       ], (err, result) => {
         if (err) throw err;
@@ -22,6 +23,7 @@ router.get('/', (req, res) => {
         session.objId = "";
         session.extProfComp = "";
         session.query = "";
+        session.profilePicture = "";
         req.session.destroy();
         console.log("User logged out");
         console.log(session);

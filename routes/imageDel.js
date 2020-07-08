@@ -25,6 +25,7 @@ router.post('/', (req, res) => {
       ], (err, response) => {
         if(err) throw err;
         result[0].profilePicture = "";
+        session.profilePicture = "";
         // console.log(result);
         // console.log("Profile picture set to default");
         res.render('imageUpload', {result});

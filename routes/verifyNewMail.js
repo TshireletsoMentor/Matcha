@@ -26,11 +26,12 @@ router.get('/:token', (req, res) => {
             errors.push({msg: 'Invalid token'});
             res.render('login', {errors});
           }else{
-            const sql2 = "UPDATE users SET email = ?, altEmail = '', token = ?";
+            const sql2 = "UPDATE users SET email = ?, altEmail = '', token = ? WHERE email = ?";
             connection.query(sql2, [
               result[0].altEmail,
-              Token
-            ], (err, result) => {
+              Token,
+              result[0].email
+            ], (err, response) => {
                 if(err) throw err;
 
                 success.push({msg: 'Email address changed'});

@@ -5,9 +5,12 @@
 <% } %>
 <% if (session.suspended != 1) { %> 
   <% if (session.extProfComp != 1) { %>
-      <br><br><p>Please complete your extended profile to enjoy the site's full features</p>
-      <a href="/updateProfile">Update Profile</a>
-      <br><br>
+    <center>
+      <div class="m-3">
+        <strong><p>Please complete your extended profile to enjoy the site's full features</p></strong>
+        <a href="/updateProfile">Update Profile</a>
+      </div> 
+    </center>
   <% } %>
 
   <% if (session.extProfComp == 1) { %>
@@ -182,11 +185,21 @@
                           </div> 
                           <div class="card-footer">
                             <div class="d-sm-flex flex-row justify-content-center">
-                                <div class="p-2">
-                                    <a id="like4" href="/like4/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
-                                        <i class="fa fa-heart" ></i>
+                              <% if (session.profilePicture) { %>
+                                <% if (liked[i].liked == true) { %>
+                                  <div class="p-2">
+                                    <a id="like" style="color:firebrick;" href="/like4/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Likes you">
+                                      <i  class="fa fa-heart" ></i>
                                     </a>
+                                  </div>
+                              <% } else { %>
+                                <div class="p-2">
+                                  <a id="like"  href="/like4/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
+                                    <i  class="fa fa-heart" ></i>
+                                  </a>
                                 </div>
+                              <% } %>
+                        <% } %>
                                 <div class="p-2">
                                     <a href="/viewProf/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
                                         <i class="fa fa-eye"></i>
@@ -243,5 +256,5 @@
       <% } %>
   <% } %>
   <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/socketEvents.js"></script>  
+  <script src="/js/socketEvents.js"></script>
 <%- include ('./include/footer')%>

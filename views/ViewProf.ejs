@@ -1,6 +1,5 @@
 <% if (session.suspended == 1) { %>
   <%- include ('./include/nav')%>
-  
   <div class="ml-3">
       <br><br>
       <p>Following a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
@@ -12,6 +11,7 @@
 
   <% if (session.username != 'admin') { %>
     <%-include ('./include/nav')%>
+    <%- include ('./include/notification')%>
     <%-include ('./include/gallery')%>
   <% } %>
 
@@ -21,7 +21,9 @@
         <a href="/updateProfile">Update Profile</a>
         <br><br>
     <% } %>
+
     <div class="container mt-2">
+      <p id="session" hidden><%- session.username %></p>
         <div class="card">
         <% if (session.extProfComp == 1 ){ %>
         <div class="row mt-5">
@@ -161,5 +163,7 @@
     </div>
     </div>
 </center>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>
 <% } %>
 <%- include ('./include/footer')%>

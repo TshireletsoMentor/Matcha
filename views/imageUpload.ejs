@@ -1,5 +1,7 @@
 <%- include ('./include/nav')%>
+<%- include ('./include/notification')%>
 <div class="container">
+  <p id="session" hidden><%= session.username%></p>
     <div  class="card card-body mt-2">
            <br></i><h1 ><i class="far fa-images"></i> Image Upload</h1>
         <div class="card card-body">
@@ -87,4 +89,6 @@
         </div>
     </div>
 </div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>
 <%- include ('./include/footer')%>

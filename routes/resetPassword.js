@@ -3,11 +3,14 @@ const router = express.Router();
 const connection = require('../config/connect');
 const bcrypt = require('bcrypt');
 const functons = require('../functions');
+const uniqid = require('uniqid');
+
 
 router.get('/:token', (req, res) => {
     const token = req.params.token;
     let errors = [];
     let success = [];
+    session = req.session;
 
     if(!token){
         errors.push({msg: 'No token provided, retry forgot password'});
@@ -52,7 +55,8 @@ router.get('/:token', (req, res) => {
 })
 
 router.post('/', (req, res) => {
-    console.log(session.email);
+    session = req.session;
+    //console.log(session.email)
     const {password, confirmpassword} = req.body;
     let errors = [];
     let success = [];

@@ -10,10 +10,8 @@ module.exports = {
             secure: false,
             port: 25,
             auth: {
-                user:"dontreply.matcha@gmail.com",
-                // process.env.EMAIL,
-                pass:"IT7matcha7"
-                // process.env.PASSWORD
+                user:process.env.EMAIL,
+                pass:process.env.PASSWORD                
             },
             tls: { rejectUnauthorized: false }
         });
@@ -38,7 +36,8 @@ module.exports = {
             auth: {
                 user: process.env.EMAIL,
                 pass: process.env.PASSWORD
-            }
+            },
+            tls: { rejectUnauthorized: false }
         });
 
         let mailOptions = {
@@ -61,7 +60,8 @@ module.exports = {
             auth: {
                 user: process.env.EMAIL,
                 pass: process.env.PASSWORD
-            }
+            },
+            tls: { rejectUnauthorized: false }
         });
 
         let mailOptions = {
@@ -108,7 +108,8 @@ module.exports = {
             auth: {
                 user: process.env.EMAIL,
                 pass: process.env.PASSWORD
-            }
+            },
+            tls: { rejectUnauthorized: false }
         });
 
         let mailOptions = {

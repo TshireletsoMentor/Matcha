@@ -112,6 +112,7 @@ router.post('/', (req, res) => {
                 }
 
                 if (req.file){
+                  session.profilePicture = req.file.filename;
                   const sql3 = "UPDATE users SET profilePicture = ? WHERE username = ?";
                   connection.query(sql3, [
                     req.file.filename,

@@ -29,8 +29,23 @@ router.get('/', (req, res) => {
   
             ret.slice((perPage * page) - perPage, (perPage * page));
             //console.log(ret);
-            
-            res.render('search', { ret, current: page, pages: Math.ceil(ret.length / perPage) });
+            const sql3 = "SELECT * FROM likes WHERE liked = ?";
+            connection.query(sql3, [
+              session.username
+            ], (err, like) => {
+              if (err) throw err;
+  
+              liked = [];
+              for(let i = 0; i < ret.length; i++){
+                liked.push({username: ret[i].username.toLowerCase(),liked: false});
+                for(let j = 0; j < like.length; j++){
+                  if(ret[i].username.toLowerCase() == like[j].username){
+                    liked[i].liked = true;
+                  }
+                }
+              }
+              res.render('search', { ret, current: page, pages: Math.ceil(ret.length / perPage), liked })                              
+            })
           })
         }, 500);
       })
@@ -176,8 +191,23 @@ router.post('/', (req, res) => {
         //console.log(sql2)
         ret.slice((perPage * page) - perPage, (perPage * page));
         // console.log((perPage * page) - perPage);
-        
-        res.render('search', { ret, current: page, pages: Math.ceil(ret.length / perPage) });
+        const sql3 = "SELECT * FROM likes WHERE liked = ?";
+        connection.query(sql3, [
+          session.username
+        ], (err, like) => {
+          if (err) throw err;
+
+          liked = [];
+          for(let i = 0; i < ret.length; i++){
+            liked.push({username: ret[i].username.toLowerCase(),liked: false});
+            for(let j = 0; j < like.length; j++){
+              if(ret[i].username.toLowerCase() == like[j].username){
+                liked[i].liked = true;
+              }
+            }
+          }
+          res.render('search', { ret, current: page, pages: Math.ceil(ret.length / perPage), liked })                              
+        })
       })
     }, 500)
   }) 

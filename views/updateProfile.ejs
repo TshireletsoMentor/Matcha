@@ -1,4 +1,6 @@
 <%- include ('./include/nav')%>
+<%- include ('./include/notification')%>
+<p id="session" hidden><%= session.username%></p>
 <div class="row mt-5">
     <div class="col-md-6 m-auto">
         <div class="card card-body">
@@ -182,4 +184,6 @@
         </div>
     </div>
 </div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>
 <%- include ('./include/footer')%>

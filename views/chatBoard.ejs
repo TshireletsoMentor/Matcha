@@ -1,4 +1,5 @@
 <%- include ('./include/nav') %>
+<%- include ('./include/notification')%>
 
 <% if (session.suspended == 1) {%>
     <p>Follwing a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
@@ -13,6 +14,7 @@
     </center>
   <% } else { %>
     <div class="container mt-2">
+      <p id="session" hidden><%= session.username%></p>
       <h1 class="mt-4"><i class="far fa-comments-o"></i> My Chats</h1><br>
       <%- include ('./partials/messages') %>
       <div class="d-sm-flex flex-row flex-wrap">
@@ -84,4 +86,6 @@
       <% } %>
   </div>
 <% } %>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>
 <%- include ('./include/footer')%>

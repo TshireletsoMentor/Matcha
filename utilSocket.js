@@ -14,7 +14,7 @@ function findRoom(sender, receiver, rooms){
 }
 
 function findUser(username, users){
-  return users.findIndex(user => user == username)
+  return users.findIndex(user => user.username == username)
 }
 
 

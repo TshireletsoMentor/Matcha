@@ -62,6 +62,7 @@ connection.query(`CREATE TABLE IF NOT EXISTS blocked
 ( id INT(9) UNSIGNED AUTO_INCREMENT PRIMARY KEY NOT NULL, 
   username VARCHAR(100) NOT NULL, 
   blocked VARCHAR(100) NOT NULL,
+  date DATETIME,
   processed INT DEFAULT \'0\'
 )`);
 console.log('\x1b[35m%s\x1b[0m', '  TABLE: \"blocked\" CREATED');

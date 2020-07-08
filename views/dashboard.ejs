@@ -10,9 +10,11 @@
 
 <% if (session.username != "admin" && session.suspended != 1) { %>
 <%- include ('./include/nav')%>
+<%- include ('./include/notification')%>
 <div class="ml-3">
   <h1 class="mt-4">Home</h1>
-  <p id="session" class="lead m3-3">Welcome <%= session.username%></p>
+  <p class="lead m3-3">Welcome <strong><%= session.username%></strong></p>
+  <p id="session" hidden><%= session.username%></p>
 </div>
 
 <div class="d-sm-flex flex-row flex-wrap">
@@ -23,7 +25,7 @@
                 <div class="card-body text-center">
                   <% if (session.extProfComp != 1) { %>
                       <% if (!ret[i].profilePicture) { %>
-                          <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
+                          <img src="/default.jpg" alt="" width="150" height="150" class="img-thumbnail rounded-circle mb-3" style="filter: blur(8px);">
                       <% } else { %>
                         <% if (ret[i].profilePicture.match(/userPic/g)) { %>
                           <img src="/<%= ret[i].profilePicture %>" alt="" width="150" height="150" class="border p-1 rounded-circle mb-3" style="filter: blur(8px);">
@@ -57,13 +59,24 @@
                             <p><%= ret[i].bio; %></p>
                     <%  } %>
                 </div> 
+                <% if (session.extProfComp == 1) { %>
                 <div class="card-footer">
                   <div class="d-sm-flex flex-row justify-content-center">
-                      <div class="p-2">
-                          <a id="like" href="/like/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
+                    <% if (session.profilePicture) { %>
+                        <% if (liked[i].liked == true) { %>
+                          <div class="p-2">
+                            <a id="like" style="color:firebrick;" href="/like/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Likes you">
                               <i  class="fa fa-heart" ></i>
+                            </a>
+                          </div>
+                      <% } else { %>
+                        <div class="p-2">
+                          <a id="like"  href="/like/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
+                            <i  class="fa fa-heart" ></i>
                           </a>
-                      </div>
+                        </div>
+                      <% } %>
+                <% } %>
                       <div class="p-2">
                           <a href="/viewProf/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
                               <i class="fa fa-eye"></i>
@@ -79,6 +92,7 @@
                       </div>
                   </div>
                 </div>
+              <% } %>
             </div>
         </div>
         <br>
@@ -133,12 +147,12 @@
               <div class="card h-100">
                   <div class="card-body text-center">
                     <% if (!ret[i].profilePicture) { %>
-                        <img src="/default.jpg" alt="" class="img-thumbnail rounded-circle m-2">
+                        <img src="/default.jpg" alt="" width="150" height="150" class="img-thumbnail rounded-circle m-2">
                     <% } else { %>
                       <% if (ret[i].profilePicture.match(/userPic/g)) { %>
-                        <img src="/<%= ret[i].profilePicture %>" alt="" class="img-thumbnail mb-3 rounded-circle">
+                        <img src="/<%= ret[i].profilePicture %>" alt="" width="150" height="150" class="border p-1 mb-3 rounded-circle">
                       <% } else { %>
-                        <img src="<%= ret[i].profilePicture %>" alt="" class="img-thumbnail mb-3 rounded-circle">
+                        <img src="<%= ret[i].profilePicture %>" alt="" width="150" height="150" class="img-thumbnail mb-3 rounded-circle">
                       <% } %>
                     <% } %>
                     <% if (ret[i].online == 'Y') { %> 

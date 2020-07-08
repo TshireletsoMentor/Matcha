@@ -3,11 +3,15 @@ const socket = io();
 const chatForm = document.getElementById('chat-form');
 const chatBox = document.getElementById('chatBox');
 const sender1 = document.getElementById('sender1').textContent.toLowerCase();
+const session = document.getElementById('sender1').textContent;
 const receiver1 = document.getElementById('receiver1').textContent.toLowerCase();;
 
 socket.on('connect', function() {
-  //console.log(socket.id);
+  //console.log(session);
   chatBox.scrollTop = chatBox.scrollHeight;
+
+  var id = socket.id;
+  socket.emit('userJoin', {id, session});
 });
 
 socket.emit('joinRoom', {sender1, receiver1});
@@ -27,7 +31,7 @@ chatForm.addEventListener('submit', (e) => {
   const sender = e.target.elements.sender.value.toLowerCase();
   const receiver = e.target.elements.receiver.value.toLowerCase();
 
-  if(message.length < 10000){
+  if(message.length < 10000 && message.length > 0){
     socket.emit('chatMessage', {sender, receiver, message});
   }
 
@@ -54,3 +58,4 @@ function outputMessage(message){
   </p>`;
   document.querySelector('#chatMessage').appendChild(div);
 }
+

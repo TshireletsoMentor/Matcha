@@ -1,4 +1,6 @@
 <%- include ('./include/nav')%>
+<%- include ('./include/notification')%>
+<p id="session" hidden><%= session.username%></p>
 <div class="container mt-5">
   <div class="text-center">
     <p class="fab fa fa-fire fa-7x"></p>
@@ -8,6 +10,7 @@
     <p style="font: 1.8em sans-serif;">contact@matcha.co.za</p>
     <b style="font: 1.5em sans-serif;"><a href="/">Home</a></b>
   </div>
-
 </div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>
 <%- include ('./include/footer')%>

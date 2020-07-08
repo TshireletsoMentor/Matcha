@@ -1,18 +1,19 @@
 <%- include ('./include/nav') %>
-
+<%- include ('./include/notification')%>
 <% if (session.suspended == 1) {%>
     <p>Follwing a report, your account has been suspended and is currently under review, please be patient while we evaluate all the facts.</p><br><br>
 <% } %>
 <% if (session.suspended != 1) { %> 
   <% if(session.extProfComp != 1) { %>
     <center>
-      <div class="card m-3">
+      <div class="m-3">
         <strong><p>Please complete your extended profile to enjoy the site's full features</p></strong>
         <a href="/updateProfile">Update Profile</a>
       </div> 
-    </center> 
+    </center>
   <% } else { %>
     <div class="container mt-2">
+    <p id="session" hidden><%= session.username%></p>
     <h1 class="mt-4"><i class="fas fa-binoculars"></i> Viewed by</h1><br>
     <%- include ('./partials/messages') %>
     <div class="d-sm-flex flex-row flex-wrap">
@@ -87,4 +88,6 @@
     <% } %>
 <% } %>
 </div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/socketEvents.js"></script>
 <%- include ('./include/footer')%>

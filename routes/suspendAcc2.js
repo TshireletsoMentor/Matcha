@@ -32,22 +32,28 @@ router.get('/', (req, res) => {
           const sql = "SELECT * FROM reports WHERE processed = '0'";
           connection.query(sql, [], (err, ret) => {
             if (err) throw err;
-    
-            const sql2 = "SELECT * FROM users WHERE username = ?";
-            connection.query(sql2, [
-              ret[0].complainant
-            ], (err, ret1) => {
-              if (err) throw err;
-    
-              const sql3 = "SELECT * FROM users WHERE username = ?";
-              connection.query(sql3, [
-                ret[0].complaintAbout
-              ], (err, ret2) => {
+
+            if(ret.length > 0){
+              const sql2 = "SELECT * FROM users WHERE username = ?";
+              connection.query(sql2, [
+                ret[0].complainant
+              ], (err, ret1) => {
                 if (err) throw err;
-    
-                res.render('reports', { ret, ret1, ret2 });
+      
+                const sql3 = "SELECT * FROM users WHERE username = ?";
+                connection.query(sql3, [
+                  ret[0].complaintAbout
+                ], (err, ret2) => {
+                  if (err) throw err;
+      
+                  res.render('reports', { ret, ret1, ret2 });
+                })
               })
-            })
+            } else {
+              ret1 = [];
+              ret2 = [];
+              res.render('reports', { ret, ret1, ret2 });
+            }
           })
         })
       });
@@ -56,6 +62,7 @@ router.get('/', (req, res) => {
       connection.query(sql, [], (err, ret) => {
         if (err) throw err;
 
+        if(ret.length > 0){
         const sql2 = "SELECT * FROM users WHERE username = ?";
         connection.query(sql2, [
           ret[0].complainant
@@ -71,10 +78,14 @@ router.get('/', (req, res) => {
             res.render('reports', { ret, ret1, ret2 });
           })
         })
+        } else {
+          ret1 = [];
+          ret2 = [];
+          res.render('reports', { ret, ret1, ret2 });
+        }
       })
     }
   }
 });
-
 
 module.exports = router;
