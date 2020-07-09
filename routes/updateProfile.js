@@ -237,10 +237,13 @@ router.post('/', (req, res) => {
                   url: url,
                   json: true,
                   }, (err, response, body) => {
+                    //console.log(body.Response.View[0].Result[0]);
                     if(!err && response.statusCode == 200){
+                      //console.log("here")
                         var lat = body.Response.View[0].Result[0].Location.NavigationPosition[0].Latitude;
                         var long = body.Response.View[0].Result[0].Location.NavigationPosition[0].Longitude;
                         var city = body.Response.View[0].Result[0].Location.Address.City;
+                        //console.log(`${city},  ${lat},  ${long}`)
                         const sql10 = "UPDATE users SET city = ?, lat = ?, lng = ? WHERE email = ?";
                         connection.query(sql10, [
                           city,

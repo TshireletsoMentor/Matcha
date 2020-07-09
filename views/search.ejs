@@ -192,14 +192,18 @@
                                       <i  class="fa fa-heart" ></i>
                                     </a>
                                   </div>
+                                <% } else { %>
+                                  <div class="p-2">
+                                    <a id="like"  href="/like4/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
+                                      <i  class="fa fa-heart" ></i>
+                                    </a>
+                                  </div>
+                                <% } %>
                               <% } else { %>
                                 <div class="p-2">
-                                  <a id="like"  href="/like4/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="Like">
-                                    <i  class="fa fa-heart" ></i>
-                                  </a>
+                                    <i  class="fa fa-heart" style="color: darkgray;" data-toggle="tooltip" data-placement="top" title="Update your profile picture"></i>
                                 </div>
                               <% } %>
-                        <% } %>
                                 <div class="p-2">
                                     <a href="/viewProf/<%- ret[i].viewToken%>" data-toggle="tooltip" data-placement="top" title="View">
                                         <i class="fa fa-eye"></i>

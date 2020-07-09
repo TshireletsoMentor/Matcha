@@ -132,7 +132,7 @@ router.post('/', (req, res) => {
                 email
             });
           }else{
-            var sql1 = "INSERT INTO users (username, firstname, lastname, email, altEmail, password, token, viewToken, verified, bio) VALUES ?";
+            var sql1 = "INSERT INTO users (username, firstname, lastname, email, altEmail, password, token, viewToken, verified, bio, profilePicture, pic1, pic2, pic3, pic4) VALUES ?";
             let userArray = [];
             let userArrayObject = [
               Username,
@@ -144,6 +144,11 @@ router.post('/', (req, res) => {
               Token,
               ViewToken,
               "N",
+              "",
+              "",
+              "",
+              "",
+              "",
               ""
             ];
             userArray.push(userArrayObject);

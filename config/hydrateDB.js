@@ -71,7 +71,7 @@ let userArray = [];
 
 
 // Hydrate database with fake data
-for (var i = 0; i <= 500; i++){
+for (var i = 0; i <= 499; i++){
 
   // var randYear = yearArr[Math.floor(Math.random()*yearArr.length)];
   // var randMonth = monthArr[Math.floor(Math.random()*monthArr.length)];
@@ -132,7 +132,7 @@ setTimeout(() => {
     var sql = "INSERT INTO users (username, firstname, lastname, email, altEmail, password, token, viewToken, verified, gender, sexualOrientation, dateOfBirth, age, bio, interest1, interest2, interest3, interest4, city, lat, lng, popularity, profilePicture, pic1, pic2, pic3, pic4, online, lastOn, suspended, extProfComp) VALUES ?";
     connection.query(sql, [userArray], (err) => {
       if (err) throw err;
-      console.log('\x1b[35m%s\x1b[0m', 'Database hydrated');
+      console.log('\x1b[35m%s\x1b[0m', `Database hydrated: ${userArray.length} users`);
       connection.end();
     });
   });

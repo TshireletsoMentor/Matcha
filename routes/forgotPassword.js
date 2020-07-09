@@ -53,33 +53,7 @@ router.post('/', (req, res) => {
               res.render('forgotPassword', {success})
           }          
         })
-        
-        // client.connect((err, db) => {
-        //     if(err) throw err;
 
-        //     dbObj = client.db(dbname);
-
-        //     dbObj.collection('users').find({email: Email}).toArray((err, result) => {
-        //         if(err) throw err;
-
-        //         if(!result){
-        //             success.push({msg: 'Email sent'});
-        //         }
-        //         else if(result[0].email == 'N'){
-        //             functions.sendMail(result[0].firstname, result[0].email, result[0].token);
-        //             success.push({msg: 'Email sent'});
-        //         }
-        //         else{
-        //             functions.forgotMail(result[0].firstname, result[0].email, result[0].token);
-        //             success.push({msg: 'Email sent'});
-        //         }
-
-        //         if(success){
-        //             res.render('forgotPassword', {success})
-        //         }
-        //     })
-
-        // });
     }
 });
 

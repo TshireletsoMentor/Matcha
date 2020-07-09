@@ -11,6 +11,7 @@ router.get('/:token', (req, res) => {
     let errors = [];
     let success = [];
     session = req.session;
+    //console.log(token);
 
     if(!token){
         errors.push({msg: 'No token provided, retry forgot password'});
@@ -30,33 +31,16 @@ router.get('/:token', (req, res) => {
       else{
         session = req.session;
         session.email = result[0].email;
-        console.log(session.email);
+        //console.log(session.email);
         res.render('resetPassword');
       }
     })
 
-    // client.connect((err, db) => {
-    //     dbObj = client.db(dbname);
-
-    //     dbObj.collection("users").find({"token": token}).toArray((err, result) => {
-    //         if(err) throw err;
-    //         if(!result.length){
-    //             errors.push({msg: 'Invalid token'});
-    //             res.render('login', {errors});
-    //         }
-    //         else{
-    //             session = req.session;
-    //             session.email = result[0].email;
-    //             console.log(session.email);
-    //             res.render('resetPassword');
-    //         }
-    //     })
-    // })
 })
 
 router.post('/', (req, res) => {
     session = req.session;
-    //console.log(session.email)
+    // console.log(session.email)
     const {password, confirmpassword} = req.body;
     let errors = [];
     let success = [];
@@ -84,22 +68,10 @@ router.post('/', (req, res) => {
           session.email
         ], (err, result) => {
           if (err) throw err;
-
+          session.email = '';
           success.push({msg: 'Password succesfully reset'});
           res.render('login', {success});
         })
-
-        // client.connect((err, db) => {
-        //     if(err) throw err
-
-        //     dbObj = client.db(dbname);
-        //     var options = { "upsert": false };
-        //     dbObj.collection("users").updateOne({"_id": session.email}, {$set: {password: hash, token: Token}}, (err, result) => {
-        //         success.push({msg: 'Password succesfully reset'});
-        //         res.render('login', {success});
-        //     });
-
-        // })
     }
 })
 

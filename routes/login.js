@@ -80,7 +80,7 @@ router.get('/', (req, res) => {
               let result = ret1;
       
               let ret = ret2.slice((perPage * page) - perPage, (perPage * page))
-              console.log((perPage * page) - perPage);
+              //console.log((perPage * page) - perPage);
               const sql3 = "SELECT * FROM likes WHERE liked = ?";
               connection.query(sql3, [
                 session.username
@@ -209,7 +209,7 @@ router.post('/', (req, res) => {
               res.render('login', {errors});
           }
           else if (result[0].verified == 'N'){
-              functions.sendMail(result[0].firstName, result[0].email, result[0].token);
+              functions.sendMail(result[0].firstname, result[0].email, result[0].token);
               errors.push({msg: 'You need to verify your email, check your emails'});
               res.render('login', {errors});
           }

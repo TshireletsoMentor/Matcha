@@ -12,7 +12,7 @@
   <% if (session.username != 'admin') { %>
     <%-include ('./include/nav')%>
     <%- include ('./include/notification')%>
-    <%-include ('./include/gallery')%>
+
   <% } %>
 
 <center>
@@ -163,6 +163,7 @@
     </div>
     </div>
 </center>
+<%-include ('./include/gallery')%>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/socketEvents.js"></script>
 <% } %>
