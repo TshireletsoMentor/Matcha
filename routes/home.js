@@ -83,8 +83,7 @@ router.get('/:page', (req, res) => {
           //  console.log(ret2);
           let result = ret1;
 
-          ret2.slice((perPage * page) - perPage, (perPage * page))
-          let ret = ret2;
+          let ret = ret2.slice((perPage * page) - perPage, (perPage * page));
           // console.log((perPage * page) - perPage);
           
           const sql3 = "SELECT * FROM likes WHERE liked = ?";

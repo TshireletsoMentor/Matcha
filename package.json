@@ -5,13 +5,16 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "config": "node config/drop.js && node config/config.js && node config/hydrateDB.js && node config/admin.js && node app.js",
+    "marking": "node config/drop.js && node config/config.js && node config/admin.js && node config/marking.js && node app.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^3.0.8",
+    "concurrently": "^5.2.0",
     "connect-flash": "^0.1.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",

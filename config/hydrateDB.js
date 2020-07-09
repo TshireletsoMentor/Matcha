@@ -1,10 +1,18 @@
-const connection = require('./connect');
+const mysql = require('mysql');
 const faker = require('faker')
 const bcrypt = require('bcrypt')
 const ImgPlaceholder = require('random-image-placeholder')
 const imgGenerator = new ImgPlaceholder();
 var Url = imgGenerator.generate();
 const uniqid = require('uniqid');
+require('dotenv').config();
+
+let connection = mysql.createConnection({
+  host      : process.env.host,
+  user      : process.env.db_user,
+  password  : process.env.db_password,
+  database  : process.env.database
+});
 
 
 function age(dateOfBirth){
@@ -61,42 +69,9 @@ var interest3Arr = ["#Pets", "#Sports", "#Photography"];
 var interest4Arr = ["#Music", "#Learning", "#Art"];
 let userArray = [];
 
-//Creat admin account
-var sql1 = "SELECT * FROM users WHERE username = ?";
-connection.query(sql1, [
-  'admin'
-], (err, result) => {
-  if (err) throw err;
-
-  if(result.length == 0){
-    var adminArr = [];
-    const password = bcrypt.hashSync("Admin123", 10);
-    var adminObj = [
-      'admin',
-      'admin',
-      'admin', 
-      'DontReply.Matcha@gmail.com',
-      password,
-      uniqid() + uniqid(),
-      uniqid() + uniqid(),
-      'Y',
-      'Admin',
-      '1'
-    ];
-    adminArr.push(adminObj);
-
-    var sql2 = "INSERT INTO users (username, firstname, lastname, email, password, token, viewToken, verified, bio, extProfComp) VALUES ?";
-    connection.query(sql2, [adminArr], (err) => {
-      if (err) throw err;
-      console.log('\x1b[35m%s\x1b[0m', 'Admin added to database')
-    })
-  }
-})
-
-
 
 // Hydrate database with fake data
-for (var i = 0; i <= 0; i++){
+for (var i = 0; i <= 500; i++){
 
   // var randYear = yearArr[Math.floor(Math.random()*yearArr.length)];
   // var randMonth = monthArr[Math.floor(Math.random()*monthArr.length)];
@@ -148,15 +123,17 @@ for (var i = 0; i <= 0; i++){
     1
   ];
   userArray.push(userArrayObject);
-
 }
-// userArray.forEach(element => {
-//   console.log(element)
-// });
 
-var sql = "INSERT INTO users (username, firstname, lastname, email, altEmail, password, token, viewToken, verified, gender, sexualOrientation, dateOfBirth, age, bio, interest1, interest2, interest3, interest4, city, lat, lng, popularity, profilePicture, pic1, pic2, pic3, pic4, online, lastOn, suspended, extProfComp) VALUES ?";
-connection.query(sql, [userArray], (err) => {
-  if (err) throw err;
-  console.log('\x1b[35m%s\x1b[0m', 'Database hydrated');
-  connection.end();
-})
+
+setTimeout(() => {
+  connection.connect((err) => {
+    if (err) throw err;
+    var sql = "INSERT INTO users (username, firstname, lastname, email, altEmail, password, token, viewToken, verified, gender, sexualOrientation, dateOfBirth, age, bio, interest1, interest2, interest3, interest4, city, lat, lng, popularity, profilePicture, pic1, pic2, pic3, pic4, online, lastOn, suspended, extProfComp) VALUES ?";
+    connection.query(sql, [userArray], (err) => {
+      if (err) throw err;
+      console.log('\x1b[35m%s\x1b[0m', 'Database hydrated');
+      connection.end();
+    });
+  });
+}, 100);

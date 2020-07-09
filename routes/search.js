@@ -26,8 +26,9 @@ router.get('/', (req, res) => {
             session.username
           ], (err, ret) => {
             if (err) throw err;
+            let ret2 = ret;
   
-            ret.slice((perPage * page) - perPage, (perPage * page));
+            ret = ret.slice((perPage * page) - perPage, (perPage * page));
             //console.log(ret);
             const sql3 = "SELECT * FROM likes WHERE liked = ?";
             connection.query(sql3, [
@@ -44,7 +45,7 @@ router.get('/', (req, res) => {
                   }
                 }
               }
-              res.render('search', { ret, current: page, pages: Math.ceil(ret.length / perPage), liked })                              
+              res.render('search', { ret, current: page, pages: Math.ceil(ret2.length / perPage), liked })                              
             })
           })
         }, 500);
@@ -97,7 +98,7 @@ router.post('/', (req, res) => {
       }
 
     if (age) {
-      //console.log(age)
+
       var startOfSearchAgeRange;
       var endOfSearchAgeRange;
 
@@ -187,10 +188,10 @@ router.post('/', (req, res) => {
         session.username
       ], (err, ret) => {
         if (err) throw err;
-
+        let ret2 = ret;
         //console.log(sql2)
-        ret.slice((perPage * page) - perPage, (perPage * page));
-        // console.log((perPage * page) - perPage);
+        ret = ret.slice((perPage * page) - perPage, (perPage * page));
+        //console.log((perPage * page) - perPage);
         const sql3 = "SELECT * FROM likes WHERE liked = ?";
         connection.query(sql3, [
           session.username
@@ -206,7 +207,7 @@ router.post('/', (req, res) => {
               }
             }
           }
-          res.render('search', { ret, current: page, pages: Math.ceil(ret.length / perPage), liked })                              
+          res.render('search', { ret, current: page, pages: Math.ceil(ret2.length / perPage), liked })                              
         })
       })
     }, 500)
