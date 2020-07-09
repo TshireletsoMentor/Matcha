@@ -37,7 +37,7 @@ router.post('/', (req, res) => {
         ], (err, result) => {
           if (err) throw err;
 
-          if(!result){
+          if(result.length < 1){
             success.push({msg: 'Email sent'});
           }
           else if(result[0].email == 'N'){
